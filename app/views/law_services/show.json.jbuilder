@@ -1,0 +1,1 @@
+json.partial! @law_service, partial: "law_service", as: :law_service 

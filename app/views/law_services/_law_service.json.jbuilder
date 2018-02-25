@@ -1,0 +1,9 @@
+json.id law_service.id
+json.name law_service.name 
+json.specialty law_service.specialty
+json.email law_service.contact_info.email
+json.phone_number law_service.contact_info.phone_number
+json.address law_service.contact_info.address
+json.city law_service.contact_info.city
+json.state law_service.contact_info.state
+json.zip law_service.contact_info.zip

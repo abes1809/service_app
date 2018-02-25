@@ -1,12 +1,23 @@
 class UsersController < ApplicationController
 
   def create
+    @contact_info = ContactInfo.new(
+                                     email: params[:email],
+                                     address: params[:address],
+                                     city: params[:city],
+                                     state: params[:state],
+                                     zip: params[:zip]
+                                   )
+     if contact_info.save
+     else 
+     render json: {errors: @contact_info.errors.full_messages}, status: :unprocessable_entity
+
     user = User.new(
       name: params[:name],
-      # params[:email],
+      email: params[:email],
       password: params[:password],
       password_confirmation: params[:password_confirmation],
-      contact_info_id: params[:contact_info_id],
+      contact_info_id: @contact_info.id,
       gender: params[:gender],
       sex: params[:sex],
       homeless_date: params[:homeless_date],
