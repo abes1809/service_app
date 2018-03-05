@@ -9,9 +9,9 @@ class ServicesController < ApplicationController
     if service_category
       if service_category == "law" 
         @services = LawService.all
-      elsif service_category.include?("mental")
+      elsif service_category == "mental"
         @services = MentalHealthService.all
-      elsif service_category.include?("shelter")
+      elsif service_category == "shelter"
         @services = Shelter.all 
       end 
     end 

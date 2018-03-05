@@ -1,4 +1,4 @@
-# This file is auto-generated from the current state of the database. Instead
+  # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180225211203) do
+ActiveRecord::Schema.define(version: 20180304211009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20180225211203) do
     t.integer "prefered_contact_method"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "website"
   end
 
   create_table "law_services", force: :cascade do |t|
@@ -78,12 +79,13 @@ ActiveRecord::Schema.define(version: 20180225211203) do
     t.integer "gender"
     t.integer "sex"
     t.date "homeless_date"
-    t.integer "domestic_violence_survivor"
     t.decimal "annual_income", precision: 10, scale: 2
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email"
+    t.boolean "domestic_violence_survivor", default: false
+    t.integer "household_size"
   end
 
 end

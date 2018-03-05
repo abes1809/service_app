@@ -3,27 +3,34 @@ class UsersController < ApplicationController
   def create
     @contact_info = ContactInfo.new(
                                      email: params[:email],
+                                     phone_number: params[:phone_number],
                                      address: params[:address],
-                                     city: params[:city],
                                      state: params[:state],
-                                     zip: params[:zip]
+                                     city: params[:city],
+                                     zip: params[:zip],
+                                     prefered_contact_method: params[:prefered_contact_method],
                                    )
-     if contact_info.save
+     if @contact_info.save
      else 
-     render json: {errors: @contact_info.errors.full_messages}, status: :unprocessable_entity
+       render json: {errors: @contact_info.errors.full_messages}, status: :unprocessable_entity
+       exit 
+     end
+
+    low_income = low_come(params[:annual_income])
 
     user = User.new(
-      name: params[:name],
-      email: params[:email],
-      password: params[:password],
-      password_confirmation: params[:password_confirmation],
-      contact_info_id: @contact_info.id,
-      gender: params[:gender],
-      sex: params[:sex],
-      homeless_date: params[:homeless_date],
-      domestic_violence_survivor: params[:domestic_violence_victim],
-      annual_income: params[:annual_income]
-    )
+                    name: params[:name],
+                    email: params[:email],
+                    password: params[:password],
+                    password_confirmation: params[:password_confirmation],
+                    contact_info_id: @contact_info.id,
+                    gender: params[:gender],
+                    sex: params[:sex],
+                    homeless_date: params[:homeless_date],
+                    domestic_violence_survivor: params[:domestic_violence_victim],
+                    annual_income: params[:annual_income]
+                    low_income: low_income
+                  )
 
     if user.save
       render json: {message: 'User created successfully'}, status: :created

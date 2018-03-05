@@ -4,11 +4,6 @@ class ContactInfo < ApplicationRecord
   has_many :mental_health_services 
   has_many :shelter_services 
 
-  validates :email, presence: true, uniqueness: true
-
-  def contact_info_id 
-    contact_info_id = self.id 
-    return contact_info_id
-  end
+  enum prefered_contact_method: {email: 1, phone: 2, in_person: 3, other: 4}
 
 end

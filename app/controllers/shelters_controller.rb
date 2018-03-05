@@ -11,11 +11,14 @@ class SheltersController < ApplicationController
   def create 
 
      @contact_info = ContactInfo.new(
-                                      email: params[:email],
-                                      address: params[:address],
-                                      city: params[:city],
-                                      state: params[:state],
-                                      zip: params[:zip]
+                                     email: params[:email],
+                                     phone_number: params[:phone_number],
+                                     address: params[:address],
+                                     state: params[:state],
+                                     city: params[:city],
+                                     zip: params[:zip],
+                                     prefered_contact_method: params[:prefered_contact_method],
+                                     website: params[:website]
                                     )
       if @contact_info.save
       else 
@@ -27,7 +30,6 @@ class SheltersController < ApplicationController
       @shelter = Shelter.new(
                                 name: params[:name],
                                 specialty: params[:specialty],
-                                contact_info_id: params[:contact_info_id],
                                 contact_info_id: @contact_info.id
                                 )
 

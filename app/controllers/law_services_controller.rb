@@ -1,25 +1,25 @@
 class LawServicesController < ApplicationController
 
-  def create 
-
-     @contact_info = ContactInfo.new(
-                                      email: params[:email],
-                                      address: params[:address],
-                                      city: params[:city],
-                                      state: params[:state],
-                                      zip: params[:zip]
-                                    )
-      if @contact_info.save
-      else 
-        render json: {errors: @contact_info.errors.full_messages}, status: :unprocessable_entity
-        exit 
-      end
-
+  def create
+    @contact_info = ContactInfo.new(
+                                    email: params[:email],
+                                    phone_number: params[:phone_number],
+                                    address: params[:address],
+                                    state: params[:state],
+                                    city: params[:city],
+                                    zip: params[:zip],
+                                    prefered_contact_method: params[:prefered_contact_method],
+                                    website: params[:website]
+                                   )
+     if @contact_info.save
+     else 
+       render json: {errors: @contact_info.errors.full_messages}, status: :unprocessable_entity
+       exit 
+     end
 
       @law_service = LawService.new(
                                 name: params[:name],
                                 specialty: params[:specialty],
-                                contact_info_id: params[:contact_info_id],
                                 contact_info_id: @contact_info.id
                                 )
 
