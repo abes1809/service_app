@@ -1,223 +1,58 @@
 var HomePage = {
-var ServicesIndexPage = {
-  template: "#services-index-page",
+  template: "#home-page",
   data: function() {
     return {
-      services: []
     };
   },
-  created: function() {
-    axios.get("/services")
-      .then(function(response) {
-        this.services = response.data;
-      }.bind(this));
-  },
+  created: function() {},
   methods: {},
   computed: {}
 };
 
-var ServicesIndexPage = {
-var ServicesIndexPage = {
-  template: "#services-index-page",
-  data: function() {
-    return {
-      services: []
-    };
-  },
-  created: function() {
-    axios.get("/services")
-      .then(function(response) {
-        this.services = response.data;
-      }.bind(this));
-  },
-  methods: {},
-  computed: {}
-};
-
-var LawServicesIndexPage = {
-var LawServicesIndexPage = {
-  template: "#lawservices-index-page",
-  data: function() {
-    return {
-      services: []
-    };
-  },
-  created: function() {
-    axios.get("/services?=law")
-      .then(function(response) {
-        this.services = response.data;
-      }.bind(this));
-  },
-  methods: {},
-  computed: {}
-};
-
-var SheltersIndexPage = {
-var SheltersIndexPage = {
-  template: "#mentalhealthservices-index-page",
-  data: function() {
-    return {
-      services: []
-    };
-  },
-  created: function() {
-    axios.get("/services?=mental")
-      .then(function(response) {
-        this.services = response.data;
-      }.bind(this));
-  },
-  methods: {},
-  computed: {}
-};
-
-var ShelterIndexPage = {
-var ShelterIndexPage = {
-  template: "#services-index-page",
-  data: function() {
-    return {
-      services: []
-    };
-  },
-  created: function() {
-    axios.get("/services")
-      .then(function(response) {
-        this.services = response.data;
-      }.bind(this));
-  },
-  methods: {},
-  computed: {}
-};
-
-
-var ServicesNewPage = {
-  template: "#services-new-page",
-  data: function() {
-    return {
-      name: "",
-      description: "",
-      price: "",
-      supplier_id: "",
-      // image: "",
-      errors: []
-    };
-  },
-  methods: {
-    submit: function() {
-      var params = {
-        name: this.name,
-        description: this.description,
-        price: this.price,
-        supplier_id: this.supplierId,
-        image: this.image
-      };
-      axios
-        .post("/services", params)
-        .then(function(response) {
-          router.push("/");
-        })
-        .catch(
-          function(error) {
-            this.errors = error.response.data.errors;
-            router.push("/login");
-          }.bind(this)
-        );
-    }
-  }
-};
-
-var ServicesShowPage = {
-  template: "#services-show-page",
-  data: function() {
-    return {
-      services: []
-    };
-  },
-  created: function() {
-    axios.get("/services/" + this.$route.params.id).then(function(response) {
-        this.product = response.data;
-      }.bind(this));
-  },
-  methods: {},
-  computed: {}
-};
-
-var ServicesEditPage = {
-  template: "#services-edit-page",
-  data: function() {
-    return {
-      name: "",
-      price: "",
-      description: "",
-      supplierId: "",
-      image: "",
-      errors: [],
-    };
-  },
-  created: function() {
-    axios
-      .patch("/services/8")
-      .then(function(response){
-        var product = response.data
-        this.name = product.name
-        this.price = product.price
-        this.description = product.description
-        this.supplierId = product.supplier_id
-        this.image = product.image
-      }.bind(this));
-  },
-  methods: {
-    submit: function() {
-      var params = {
-        name: this.name,
-        price: this.price,
-        description: this.description,
-        supplier_id: this.supplierId,
-        image: this.image,
-      };
-      axios
-        .post("/prodcuts", params)
-        .then(function(response) {
-          router.push("/");
-        })
-        .catch(
-          function(error) {
-            this.errors = error.response.data.errors;
-            router.push("/login");
-          }.bind(this)
-        );
-    }
-  }
-};
-
-
-var ServicesDestoryPage = {
-  created: function() {
-    axios.delete("/services/" + this.$route.params.id).then(function(response) {
-      router.push("/");
-    });
-  }
-};
-
-var SignupPage = {
-  template: "#signup-page",
+var SurveyPage = {
+  template: "#survey-page",
   data: function() {
     return {
       name: "",
       email: "",
       password: "",
       passwordConfirmation: "",
+      gender: "",
+      sex: "",
+      homelessDate: "",
+      annualIncome: "",
+      householdSize: "",
+      domesticViolenceSurvivor: "",
+      age: "",
+      phoneNumber: "",
+      address: "",
+      city: "",
+      state: "",
+      zip: "",
       errors: []
     };
   },
   methods: {
-    submit: function() {
+    submit: function () {
       var params = {
         name: this.name,
-        email: this.email,
         password: this.password,
-        password_confirmation: this.passwordConfirmation
+        password_confirmation: this.passwordConfirmation,
+        email: this.email,
+        gender: this.gender,
+        sex: this.sex,
+        homeless_date: this.homelessDate,
+        annual_income: this.annualIncome,
+        household_size: this.householdSize,
+        domestic_violence_survivor: this.domesticViolenceSurvivor,
+        age: this.age,
+        phone_number: this.phoneNumber,
+        address: this.address,
+        city: this.city,
+        state: this.state,
+        zip: this.zip,
       };
-      axios
+      axios 
         .post("/users", params)
         .then(function(response) {
           router.push("/login");
@@ -227,9 +62,35 @@ var SignupPage = {
             this.errors = error.response.data.errors;
           }.bind(this)
         );
-    }
+    },
   }
 };
+
+var ServicesIndexPage = {
+  template: "#services-index-page",
+  data: function() {
+    return {
+      services: []
+    };
+  },
+  created: function() {
+    axios.get("/services")
+      .then(function(response) {
+        this.services = response.data;
+      }.bind(this));
+  },
+};
+
+// var ServiceIndexPage = {
+//   template: "#home-page",
+//   data: function() {
+//     return {
+//     };
+//   },
+//   created: function() {},
+//   methods: {},
+//   computed: {}
+// };
 
 var LoginPage = {
   template: "#login-page",
@@ -274,21 +135,23 @@ var LogoutPage = {
 
 var router = new VueRouter({
   routes: [
-          { path: "/", component: ServicesIndexPage },
+          { path: "/", component: HomePage },
+          { path: "/#", component: HomePage },
+          { path: "/survey-page", component: SurveyPage},
+
           { path: "/services", component: ServicesIndexPage },
           
-          { path: "/services?=law", component: LawServicesIndexPage },
-          { path: "/services?=mental", component: MentalHealthServicesIndexPage },
-          { path: "/services?=shelter", component: SheltersIndexPage },
+          // { path: "/services?=law", component: LawServicesIndexPage },
+          // { path: "/services?=mental", component: MentalHealthServicesIndexPage },
+          // { path: "/services?=shelter", component: SheltersIndexPage },
 
-          { path: "/services/new", component: ServicesNewPage },
-          { path: "/services/:id", component: ServicesShowPage },
-          { path: "/services/8/edit", component: ServicesEditPage },
-          { path: "/services/:id/delete", component: ServicesDestoryPage },
-          { path: "/signup", component: SignupPage },
+          // { path: "/services/new", component: ServicesNewPage },
+          // { path: "/se,rvices/:id", component: ServicesShowPage },
+          // { path: "/services/8/edit", component: ServicesEditPage },
+          // { path: "/services/:id/delete", component: ServicesDestoryPage },
+          // { path: "/signup", component: SignupPage },
           { path: "/login", component: LoginPage },
           { path: "/logout", component: LogoutPage },
-
 
           ],
   scrollBehavior: function(to, from, savedPosition) {

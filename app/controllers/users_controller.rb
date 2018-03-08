@@ -16,8 +16,6 @@ class UsersController < ApplicationController
        exit 
      end
 
-    low_income = low_come(params[:annual_income])
-
     user = User.new(
                     name: params[:name],
                     email: params[:email],
@@ -28,8 +26,9 @@ class UsersController < ApplicationController
                     sex: params[:sex],
                     homeless_date: params[:homeless_date],
                     domestic_violence_survivor: params[:domestic_violence_victim],
-                    annual_income: params[:annual_income]
-                    low_income: low_income
+                    annual_income: params[:annual_income],
+                    household_size: params[:household_size],
+                    age: params[:age]
                   )
 
     if user.save

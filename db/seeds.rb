@@ -50,27 +50,27 @@
 
 
 
-mental_health_services = all_services.select{|service| service['program_model'] == "Behavioral Health Support (At-Risk Youth)" || service['program_model'] == "Counseling and Case Management Services"}
+# mental_health_services = all_services.select{|service| service['program_model'] == "Behavioral Health Support (At-Risk Youth)" || service['program_model'] == "Counseling and Case Management Services"}
 
-mental_health_services = mental_health_services.uniq{|mental_health_service| mental_health_service["agency"]}
+# mental_health_services = mental_health_services.uniq{|mental_health_service| mental_health_service["agency"]}
 
 
-mental_health_services.each do |mental_health_service|
-  contact_info = ContactInfo.create!(
-                                    phone_number: mental_health_service["phone_number"],
-                                    address: mental_health_service["address"],
-                                    state: "IL",
-                                    city: "Chicago",
-                                    zip: mental_health_service["zip"],
-                                    )
+# mental_health_services.each do |mental_health_service|
+#   contact_info = ContactInfo.create!(
+#                                     phone_number: mental_health_service["phone_number"],
+#                                     address: mental_health_service["address"],
+#                                     state: "IL",
+#                                     city: "Chicago",
+#                                     zip: mental_health_service["zip"],
+#                                     )
 
-  MentalHealthService.create!(
-                   name: mental_health_service["agency"],
-                   specialty: mental_health_service["program_model"],
-                   contact_info_id: contact_info.id
-                   )
+#   MentalHealthService.create!(
+#                    name: mental_health_service["agency"],
+#                    specialty: mental_health_service["program_model"],
+#                    contact_info_id: contact_info.id
+#                    )
 
-end
+# end
 
 
 # Qualifier.create!(
@@ -80,12 +80,12 @@ end
 #                   target_value: "true",
 #                   data_form: "boolean",
 #                   comparison: "=="
-#                   )
+# #                   )
 # Qualifier.create!(
 #                   name: "annual_income",
 #                   servicable_id: 1, 
 #                   servicable_type: "LawService",
-#                   target_value: "true",
+#                   target_value: "8060 + (user.household_size * 4000)",
 #                   data_form: "integer",
 #                   comparison: "<="
 #                   )
@@ -93,7 +93,7 @@ end
 #                   name: "annual_income",
 #                   servicable_id: 2, 
 #                   servicable_type: "LawService",
-#                   target_value: "true",
+#                   target_value: "8060 + (user.household_size * 4000)",
 #                   data_form: "integer",
 #                   comparison: "<="
 #                   )
@@ -101,7 +101,7 @@ end
 #                   name: "annual_income",
 #                   servicable_id: 10, 
 #                   servicable_type: "LawService",
-#                   target_value: "true",
+#                   target_value: "8060 + (user.household_size * 4000)",
 #                   data_form: "integer",
 #                   comparison: "<="
 #                   )
@@ -109,7 +109,7 @@ end
 #                   name: "annual_income",
 #                   servicable_id: 11, 
 #                   servicable_type: "LawService",
-#                   target_value: "true",
+#                   target_value: "8060 + (user.household_size * 4000)",
 #                   data_form: "integer",
 #                   comparison: "<="
 #                   )
@@ -117,7 +117,7 @@ end
 #                   name: "annual_income",
 #                   servicable_id: 16, 
 #                   servicable_type: "LawService",
-#                   target_value: "true",
+#                   target_value: "8060 + (user.household_size * 4000)",
 #                   data_form: "integer",
 #                   comparison: "<="
 #                   )
@@ -125,7 +125,7 @@ end
 #                   name: "annual_income",
 #                   servicable_id: 18, 
 #                   servicable_type: "LawService",
-#                   target_value: "true",
+#                   target_value: "8060 + (user.household_size * 4000)",
 #                   data_form: "integer",
 #                   comparison: "<="
 #                   )
@@ -133,16 +133,195 @@ end
 #                   name: "annual_income",
 #                   servicable_id: 19, 
 #                   servicable_type: "LawService",
-#                   target_value: "true",
+#                   target_value: "8060 + (user.household_size * 4000)",
 #                   data_form: "integer",
 #                   comparison: "<="
 #                   )
+# Qualifier.create!(
+#                   name: "annual_income",
+#                   servicable_id: 2, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: "8060 + (user.household_size * 4000)",
+#                   data_form: "integer",
+#                   comparison: "<="
+#                   )
+# Qualifier.create!(
+#                   name: "annual_income",
+#                   servicable_id: 3, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: "8060 + (user.household_size * 4000)",
+#                   data_form: "integer",
+#                   comparison: "<="
+#                   )
+# Qualifier.create!(
+#                   name: "annual_income",
+#                   servicable_id: 279, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: "8060 + (user.household_size * 4000)",
+#                   data_form: "integer",
+#                   comparison: "<="
+#                   )
+# Qualifier.create!(
+#                   name: "annual_income",
+#                   servicable_id: 280, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: "8060 + (user.household_size * 4000)",
+#                   data_form: "integer",
+#                   comparison: "<="
+#                   )
+# Qualifier.create!(
+#                   name: "annual_income",
+#                   servicable_id: 11, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: "8060 + (user.household_size * 4000)",
+#                   data_form: "integer",
+#                   comparison: "<="
+#                   )
+# Qualifier.create!(
+#                   name: "annual_income",
+#                   servicable_id: 12, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: "8060 + (user.household_size * 4000)",
+#                   data_form: "integer",
+#                   comparison: "<="
+#                   )
+# Qualifier.create!(
+#                   name: "annual_income",
+#                   servicable_id: 288, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: "8060 + (user.household_size * 4000)",
+#                   data_form: "integer",
+#                   comparison: "<="
+#                   )
+# Qualifier.create!(
+#                   name: "annual_income",
+#                   servicable_id: 291, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: "8060 + (user.household_size * 4000)",
+#                   data_form: "integer",
+#                   comparison: "<="
+#                   )
+# Qualifier.create!(
+#                   name: "annual_income",
+#                   servicable_id: 292, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: "8060 + (user.household_size * 4000)",
+#                   data_form: "integer",
+#                   comparison: "<="
+#                   )
+# Qualifier.create!(
+#                   name: "annual_income",
+#                   servicable_id: 293, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: "8060 + (user.household_size * 4000)",
+#                   data_form: "integer",
+#                   comparison: "<="
+#                   )
+# Qualifier.create!(
+#                   name: "age",
+#                   servicable_id: 275, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: 18,
+#                   data_form: "integer",
+#                   comparison: "<"
+#                   )
+# Qualifier.create!(
+#                   name: "age",
+#                   servicable_id: 276, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: 18,
+#                   data_form: "integer",
+#                   comparison: "<"
+#                   )
+# Qualifier.create!(
+#                   name: "age",
+#                   servicable_id: 277, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: 18,
+#                   data_form: "integer",
+#                   comparison: "<"
+#                   )
+# Qualifier.create!(
+#                   name: "age",
+#                   servicable_id: 279, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: 18,
+#                   data_form: "integer",
+#                   comparison: "<"
+#                   )
+# Qualifier.create!(
+#                   name: "age",
+#                   servicable_id: 281, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: 18,
+#                   data_form: "integer",
+#                   comparison: "<"
+#                   )
+# Qualifier.create!(
+#                   name: "age",
+#                   servicable_id: 283, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: 18,
+#                   data_form: "integer",
+#                   comparison: "<"
+#                   )
+# Qualifier.create!(
+#                   name: "age",
+#                   servicable_id: 286, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: 18,
+#                   data_form: "integer",
+#                   comparison: "<"
+#                   )
+# Qualifier.create!(
+#                   name: "age",
+#                   servicable_id: 289, 
+#                   servicable_type: "MentalHealthService",
+#                   target_value: 18,
+#                   data_form: "integer",
+#                   comparison: "<"
+#                   )
+# Qualifier.create!(
+#                   name: "age",
+#                   servicable_id: 15, 
+#                   servicable_type: "Shelter",
+#                   target_value: 18,
+#                   data_form: "integer",
+#                   comparison: ">="
+#                   )
+# Qualifier.create!(
+#                   name: "age",
+#                   servicable_id: 7, 
+#                   servicable_type: "Shelter",
+#                   target_value: 18,
+#                   data_form: "integer",
+#                   comparison: ">="
+#                   )
+# Qualifier.create!(
+#                   name: "age",
+#                   servicable_id: 13, 
+#                   servicable_type: "Shelter",
+#                   target_value: 18,
+#                   data_form: "integer",
+#                   comparison: "<"
+#                   )
+# Qualifier.create!(
+#                   name: "age",
+#                   servicable_id: 29, 
+#                   servicable_type: "Shelter",
+#                   target_value: 18,
+#                   data_form: "integer",
+#                   comparison: "<"
+#                   )
 
-
-
-
-
-
+Qualifier.create!(
+                  name: "zip",
+                  servicable_id: 13, 
+                  servicable_type: "MentalHealthService",
+                  target_value: "",
+                  data_form: "integer",
+                  comparison: "=="
+                  )
 
 
 

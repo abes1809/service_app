@@ -1,6 +1,6 @@
 class MentalHealthService < ApplicationRecord
   belongs_to :contact_info 
-  has_many :qualifers, as: :servicable
+  has_many :qualifiers, as: :servicable
   has_many :user_services, as: :servicable
 
   def qualified_user?(user)
