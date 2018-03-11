@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   patch "/law_services/:id" => 'law_services#update'
   delete "/law_services/:id" => 'law_services#destroy'
 
+  get "/user_services" => 'user_services#index'
   post "/user_services" => 'user_services#create'
 
 end

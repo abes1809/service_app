@@ -55,7 +55,7 @@ var SurveyPage = {
       axios 
         .post("/users", params)
         .then(function(response) {
-          router.push("/login");
+          router.push("/user_services");
         })
         .catch(
           function(error) {
@@ -80,17 +80,77 @@ var ServicesIndexPage = {
       }.bind(this));
   },
 };
+var ServicesIndexPage = {
+  template: "#services-index-page",
+  data: function() {
+    return {
+      services: []
+    };
+  },
+  created: function() {
+    axios.get("/services")
+      .then(function(response) {
+        this.services = response.data;
+      }.bind(this));
+  },
+};
+var LawServicesIndexPage = {
+  template: "#law-services-index-page",
+  data: function() {
+    return {
+      lawServices: []
+    };
+  },
+  created: function() {
+    axios.get("/law_services")
+      .then(function(response) {
+        this.law_services = response.data;
+      }.bind(this));
+  },
+};
+var SheltersIndexPage = {
+  template: "#shelters-index-page",
+  data: function() {
+    return {
+      shelters: []
+    };
+  },
+  created: function() {
+    axios.get("/shelters")
+      .then(function(response) {
+        this.shelters = response.data;
+      }.bind(this));
+  },
+};
+var MentalHealthServicesIndexPage = {
+  template: "#mental-health-services-index-page",
+  data: function() {
+    return {
+      mentalHealthServices: []
+    };
+  },
+  created: function() {
+    axios.get("/law_services")
+      .then(function(response) {
+        this.me_services = response.data;
+      }.bind(this));
+  },
+};
 
-// var ServiceIndexPage = {
-//   template: "#home-page",
-//   data: function() {
-//     return {
-//     };
-//   },
-//   created: function() {},
-//   methods: {},
-//   computed: {}
-// };
+var UserServicesIndexPage = {
+  template: "#user-services-index-page",
+  data: function() {
+    return {
+      user_services: []
+    };
+  },
+  created: function() {
+    axios.get("/user_services")
+      .then(function(response) {
+        this.user_services = response.data;
+      }.bind(this));
+  },
+};
 
 var LoginPage = {
   template: "#login-page",
@@ -140,6 +200,10 @@ var router = new VueRouter({
           { path: "/survey-page", component: SurveyPage},
 
           { path: "/services", component: ServicesIndexPage },
+          { path: "/law_services", component: LawServicesIndexPage },
+          { path: "/shelters", component: SheltersIndexPage },
+          { path: "/mental_health_services", component: MentalHealthServicesIndexPage },
+
           
           // { path: "/services?=law", component: LawServicesIndexPage },
           // { path: "/services?=mental", component: MentalHealthServicesIndexPage },
@@ -150,6 +214,9 @@ var router = new VueRouter({
           // { path: "/services/8/edit", component: ServicesEditPage },
           // { path: "/services/:id/delete", component: ServicesDestoryPage },
           // { path: "/signup", component: SignupPage },
+
+          { path: "/user_services", component:UserServicesIndexPage },
+
           { path: "/login", component: LoginPage },
           { path: "/logout", component: LogoutPage },
 

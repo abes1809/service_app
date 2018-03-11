@@ -1,5 +1,13 @@
 class SheltersController < ApplicationController
 
+  def index
+
+    @shelters = Shelter.all 
+
+    render 'index.json.jbuilder'
+
+  end 
+
   def show 
 
     @shelter = Shelter.find(params[:id])

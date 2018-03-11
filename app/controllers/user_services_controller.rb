@@ -1,6 +1,13 @@
 class UserServicesController < ApplicationController
   before_action :authenticate_user
 
+  def index
+
+    @user_services = current_user.user_services
+    render 'index.json.jbuilder'
+    
+  end 
+
   def create
     service_type = params[:service_type]
       if service_type = "shelter"

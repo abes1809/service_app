@@ -1,5 +1,13 @@
 class MentalHealthServicesController < ApplicationController
 
+  def index
+
+    @mental_health_services = MentalHealthService.all 
+
+    render 'index.json.jbuilder'
+
+  end 
+
   def show 
 
     @mental_health_service = MentalHealthService.find(params[:id])

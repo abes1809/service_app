@@ -1,5 +1,13 @@
 class LawServicesController < ApplicationController
 
+  def index
+
+    @law_service = LawService.all 
+
+    render 'index.json.jbuilder'
+
+  end 
+
   def create
     @contact_info = ContactInfo.new(
                                     email: params[:email],
