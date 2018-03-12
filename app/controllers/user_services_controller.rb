@@ -3,18 +3,25 @@ class UserServicesController < ApplicationController
 
   def index
 
-    @user_services = current_user.user_services
-    render 'index.json.jbuilder'
+    services = current_user.user_services
+
+    @user_services = services.service_matches(services)
     
+    if render 'index.json.jbuilder'
+
+    else 
+      render json: {errors: @user_services.errors.full_messages}, status: :unprocessable_entity
+    end 
+
   end 
 
   def create
     service_type = params[:service_type]
-      if service_type = "shelter"
+      if service_type == "shelter"
         services = Shelter.all
-      elsif service_type = "mental_health_service"
+      elsif service_type == "mental_health_service"
         services = MentalHealthService.all 
-      elsif service_type = "law_service"
+      elsif service_type == "law_service"
         services = LawService.all
       end 
     matches = 0 
@@ -35,8 +42,10 @@ class UserServicesController < ApplicationController
 
     if matches == 1 
       return 'show.json.jbuilder'
-    else
+    elsif matches > 1
       return 'index.json.jbuilder'
+    else
+      render json: {errors: @user_services.errors.full_messages}, status: :unprocessable_entity
     end 
   end 
 

@@ -1,1 +1,1 @@
-json.array! @user_services, partial: "user_services", as: :user_services 
+json.array! @user_services, partial: "user_service", as: :user_service 

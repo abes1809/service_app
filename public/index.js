@@ -5,7 +5,9 @@ var HomePage = {
     };
   },
   created: function() {},
-  methods: {},
+  methods: {
+
+  },
   computed: {}
 };
 
@@ -13,6 +15,7 @@ var SurveyPage = {
   template: "#survey-page",
   data: function() {
     return {
+      serviceType: [],
       name: "",
       email: "",
       password: "",
@@ -35,6 +38,7 @@ var SurveyPage = {
   methods: {
     submit: function () {
       var params = {
+        service_type: this.serviceType,
         name: this.name,
         password: this.password,
         password_confirmation: this.passwordConfirmation,
@@ -80,20 +84,7 @@ var ServicesIndexPage = {
       }.bind(this));
   },
 };
-var ServicesIndexPage = {
-  template: "#services-index-page",
-  data: function() {
-    return {
-      services: []
-    };
-  },
-  created: function() {
-    axios.get("/services")
-      .then(function(response) {
-        this.services = response.data;
-      }.bind(this));
-  },
-};
+
 var LawServicesIndexPage = {
   template: "#law-services-index-page",
   data: function() {
@@ -141,15 +132,22 @@ var UserServicesIndexPage = {
   template: "#user-services-index-page",
   data: function() {
     return {
-      user_services: []
+      user_services: [],
+      errors: [],
     };
   },
   created: function() {
     axios.get("/user_services")
       .then(function(response) {
         this.user_services = response.data;
-      }.bind(this));
-  },
+      }.bind(this))
+      .catch(
+        function(error) {
+          this.errors = error.response.data.errors;
+          router.push("/login");
+        }.bind(this)
+      );
+    }
 };
 
 var LoginPage = {
@@ -172,7 +170,7 @@ var LoginPage = {
           axios.defaults.headers.common["Authorization"] =
             "Bearer " + response.data.jwt;
           localStorage.setItem("jwt", response.data.jwt);
-          router.push("/");
+          router.push("/#/user_services");
         })
         .catch(
           function(error) {
