@@ -14,7 +14,7 @@ class ServicesController < ApplicationController
       elsif service_category == "shelter"
         @services = Shelter.all 
       end 
-    end 
+    end
 
     render 'index.json.jbuilder'
   end 

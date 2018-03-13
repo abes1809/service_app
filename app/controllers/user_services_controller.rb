@@ -1,5 +1,4 @@
 class UserServicesController < ApplicationController
-  before_action :authenticate_user
 
   def index
 
@@ -16,14 +15,26 @@ class UserServicesController < ApplicationController
   end 
 
   def create
+    # categories = params[:service_type]
+
+    # services = service_categories(categories)
+
+    # p services
+
     service_type = params[:service_type]
-      if service_type == "shelter"
-        services = Shelter.all
-      elsif service_type == "mental_health_service"
-        services = MentalHealthService.all 
-      elsif service_type == "law_service"
-        services = LawService.all
-      end 
+    p service_type
+
+     
+
+    if service_type == "shelters"
+      services = Shelter.all
+    elsif service_type == "mental_health_services"
+      services = MentalHealthService.all 
+    elsif service_type == "law_services"
+      services = LawService.all
+    end 
+    p current_user
+
     matches = 0 
 
     services.each do |service|

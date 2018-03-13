@@ -15,7 +15,7 @@ var SurveyPage = {
   template: "#survey-page",
   data: function() {
     return {
-      serviceType: [],
+      serviceType: "",
       name: "",
       email: "",
       password: "",
@@ -56,8 +56,71 @@ var SurveyPage = {
         state: this.state,
         zip: this.zip,
       };
+      var login_params = {
+        auth: { email: this.email, password: this.password }
+      };
+      var category_params = {
+        service_type: this.serviceType,
+      }
+
       axios 
         .post("/users", params)
+        .then(function(response) {
+        })
+        .catch(
+          function(error) {
+            this.errors = error.response.data.errors;
+          }.bind(this)
+        )
+        .then(function(){
+          axios
+            .post("/user_token", login_params)
+            .then(function(response) {
+              axios.defaults.headers.common["Authorization"] =
+                "Bearer " + response.data.jwt;
+              localStorage.setItem("jwt", response.data.jwt);
+              router.push("/user_services");
+            })
+            .catch(
+              function(error) {
+                this.errors = ["Invalid email or password."];
+                this.email = "";
+                this.password = "";
+              }.bind(this)
+            );
+        })
+
+        .then(function(){
+          axios
+            .post("/user_services", category_params)
+            .then(function(response) {
+              router.push("/user_services");
+            })
+            .catch(
+                  function(error) {
+                    this.errors = error.response.data.errors;
+                  }.bind(this)
+            );
+        });
+    },
+  }
+};
+
+var MatchPage = {
+  template: "#match-page",
+  data: function() {
+    return {
+      serviceType: "",
+    };
+  },
+  created: function() {},
+  methods: {
+    submit: function () {
+      var params = {
+        service_type: this.serviceType,
+      };
+      axios 
+        .post("/user_services", params)
         .then(function(response) {
           router.push("/user_services");
         })
@@ -66,7 +129,7 @@ var SurveyPage = {
             this.errors = error.response.data.errors;
           }.bind(this)
         );
-    },
+    }
   }
 };
 
@@ -78,9 +141,9 @@ var ServicesIndexPage = {
     };
   },
   created: function() {
-    axios.get("/services")
+    axios.get("/law_services")
       .then(function(response) {
-        this.services = response.data;
+        this.law_services = response.data;
       }.bind(this));
   },
 };
@@ -150,6 +213,21 @@ var UserServicesIndexPage = {
     }
 };
 
+var ServicesShowPage = {
+  template: "#services-show-page",
+  data: function() {
+    return {
+      services: []
+    };
+  },
+  created: function() {
+    axios.get("/services/" + this.$route.params.id).then(function(response) {
+        this.product = response.data;
+      }.bind(this));
+  },
+  methods: {},
+  computed: {}
+};
 var LoginPage = {
   template: "#login-page",
   data: function() {
@@ -170,7 +248,7 @@ var LoginPage = {
           axios.defaults.headers.common["Authorization"] =
             "Bearer " + response.data.jwt;
           localStorage.setItem("jwt", response.data.jwt);
-          router.push("/#/user_services");
+          router.push("/user_services");
         })
         .catch(
           function(error) {
@@ -196,6 +274,8 @@ var router = new VueRouter({
           { path: "/", component: HomePage },
           { path: "/#", component: HomePage },
           { path: "/survey-page", component: SurveyPage},
+          { path: "/match-page", component: MatchPage},
+
 
           { path: "/services", component: ServicesIndexPage },
           { path: "/law_services", component: LawServicesIndexPage },
@@ -208,7 +288,7 @@ var router = new VueRouter({
           // { path: "/services?=shelter", component: SheltersIndexPage },
 
           // { path: "/services/new", component: ServicesNewPage },
-          // { path: "/se,rvices/:id", component: ServicesShowPage },
+          { path: "/services/:id", component: ServicesShowPage },
           // { path: "/services/8/edit", component: ServicesEditPage },
           // { path: "/services/:id/delete", component: ServicesDestoryPage },
           // { path: "/signup", component: SignupPage },

@@ -155,7 +155,7 @@
               <div class="header-brand">
                 <a class="header-brand-text" href="index.html" title="Home">
                   <h1 class="h2">
-                    <span class="header-brand-text-alt">Connect</span>R<span class="header-brand-text-alt">.</span>
+                    <span class="header-brand-text-alt">Service</span>Search<span class="header-brand-text-alt">.</span>
                   </h1>
                 </a>
                 <div class="header-divider d-none d-lg-block"></div>
@@ -188,7 +188,9 @@
                     <!-- Buttons -->
                     <a href="/#/user_services" class="mb-2 btn btn-outline-green">See Your Services</a>
                     <a href="/#/login" class="mb-2 btn btn-outline-green">Login</a>
+                    <a href="/#/match-page" class="mb-2 btn btn-outline-green">See If I Qualify</a> 
                     <a href="#" class="mb-2 btn btn-outline-green">For Providers</a>      
+
                 </div>
                 <!--/.navbar-collapse -->
               </div>
@@ -406,11 +408,12 @@
       <ul>
         <li class="text-danger" v-for="error in errors">{{ error }}</li>
       </ul>
+
       <div class="form-group">
         <label>What types of resources are you seeking?</label> <br>
-        <input type="checkBox" name="law_service" value="law_service" v-model="serviceType"> Law Services<br>
-        <input type="checkBox" name="mental_health_service" value="mental_health_service" v-model="serviceType"> Mental Health Services<br>
-        <input type="checkBox" name="shelters" value="shelters" v-model="serviceType"> Shelters<br>
+        <input type="radio" name="serviceType" value="law_services" v-model="serviceType"> Law Services<br>
+        <input type="radio" name="serviceType" value="mental_health_services" v-model="serviceType"> Mental Health Services<br>
+        <input type="radio" name="serviceType" value="shelters" v-model="serviceType">Shelters<br>
       </div>
       <div class="form-group">
         <label>Name:</label>
@@ -487,30 +490,6 @@
   </div>
 </template>
 
-<template id="services-index-page">
-  <div class="vue-component">
-    <div class="container">
-      <div class="row">
-        <div v-for="service in services" class="col-md-4">
-
-        <div class="card bg-dark text-white text-center">
-          <div class="card-header"> {{service.servicable_type}}</div>
-          <div class="card-body">
-            <h4 class="card-title">
-             {{ service.name }}
-            </h4>
-            <blockquote class="card-body quote">
-              <p class="card-title"> Phone Number: {{ service.phone_number }}</p>
-              <p class="card-title">Address: {{ service.address }} {{ service.city }} {{ service.state }} {{ service.zip }} </p>
-            </blockquote>
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <template id="law-services-index-page">
   <div class="vue-component">
     <div class="container">
@@ -535,29 +514,58 @@
   </div>
 </template>
 
+<template id="match-page">
+  <div class="vue-component">
+    <div class="container">
+      <div class="form-group">
+        <label>What types of resources are you seeking?</label> <br>
+        <input type="radio" name="serviceType" value="law_services" v-model="serviceType"> Law Services<br>
+        <input type="radio" name="serviceType" value="mental_health_services" v-model="serviceType"> Mental Health Services<br>
+        <input type="radio" name="serviceType" value="shelters" v-model="serviceType">Shelters<br>
+      </div>
+        <button class="btn btn-primary" v-on:click="submit()">Submit</button>
+    </div>
+  </div>
+</template>
+
 <template id="services-index-page">
   <div class="vue-component">
     <div class="container">
       <div class="row">
-        <div v-for="service in services" class="col-md-4">
+        <div v-for="law_service in law_services" class="col-md-4">
 
-        <div class="card bg-dark text-white text-center">
-          <div class="card-header"> {{service.servicable_type}}</div>
-          <div class="card-body">
-            <h4 class="card-title">
-             {{ service.name }}
-            </h4>
-            <blockquote class="card-body quote">
+    <!-- 
+          <div class="card">
+            <img class="card-img-top img-fluid" src="assets/img/backgrounds/picjumbo.com_P1010041.jpg" alt="Card image cap">
+            <div class="card-body">
+              <h4 class="card-title">
+                {{ service.name }}
+              </h4>
               <p class="card-title"> Phone Number: {{ service.phone_number }}</p>
               <p class="card-title">Address: {{ service.address }} {{ service.city }} {{ service.state }} {{ service.zip }} </p>
-            </blockquote>
-
+              <a v-bind:href="'/#/services/' + service.id" class="btn btn-dark">See More Info</a> 
+            </div>
           </div>
+ -->
+ 
+          
+            <div class="card card-body text-center">
+              <h4 class="card-title">
+                {{law_service.name}}
+              </h4>
+              <p class="card-text">Phone Number: {{ law_service.phone_number }}</p>
+              <p class="card-title">Address: {{ law_service.address }} {{ law_service.city }} {{ law_service.state }} {{ law_service.zip }} </p>
+              <a v-bind:href="'/#/services/' + service.id" class="btn btn-dark">See More Info</a>
+            </div> 
+          
+       
+         
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <template id="user-services-index-page">
   <div class="vue-component">
@@ -579,6 +587,17 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</template>
+
+<template id="services-show-page">
+  <div class="vue-component">
+    <div class="container">
+      <h1>{{ service.name }}</h1>
+      <h4>Descrition: {{ service.specialty }}</h4>
+      <h3>Phone Number: {{ service.phone_number }}</h3>
+      <h3>Address: {{ service.address }} {{ service.city }} {{ service.state }} {{ service.zip }}</h3>
     </div>
   </div>
 </template>

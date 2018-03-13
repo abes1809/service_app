@@ -7,6 +7,7 @@ class Shelter < ApplicationRecord
     qualified = true
 
     qualifiers.each do |qualifier|
+      p qualifier.id
       unless eval("user.#{qualifier.name} #{qualifier.comparison} #{qualifier.target_value}")
         qualified = false
       end

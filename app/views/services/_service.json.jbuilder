@@ -1,4 +1,5 @@
 json.id service.id
+# json.type service.class
 json.name service.name 
 json.specialty service.specialty
 json.email service.contact_info.email
