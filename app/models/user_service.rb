@@ -9,9 +9,18 @@ class UserService < ApplicationRecord
     user_services.each do |user_service|
       
       service_info = eval("#{user_service.servicable_type}.find(#{user_service.servicable_id})")
+
+      puts service_info.class 
+
+      service_info = [service_info]
+
+      user_info = [user_service]
+
+      service_info = user_info + service_info
     
       services << service_info
     end
+
     services
   end
 

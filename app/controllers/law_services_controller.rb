@@ -2,7 +2,9 @@ class LawServicesController < ApplicationController
 
   def index
 
-    @law_service = LawService.all 
+    @law_services = LawService.all 
+
+    puts @law_services
 
     render 'index.json.jbuilder'
 

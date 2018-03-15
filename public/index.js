@@ -72,7 +72,6 @@ var SurveyPage = {
             this.errors = error.response.data.errors;
           }.bind(this)
         )
-        .then(function(){
           axios
             .post("/user_token", login_params)
             .then(function(response) {
@@ -88,11 +87,7 @@ var SurveyPage = {
                 this.password = "";
               }.bind(this)
             );
-        })
-
-        .then(function(){
-          axios
-            .post("/user_services", category_params)
+          axios.post("/user_services", category_params)
             .then(function(response) {
               router.push("/user_services");
             })
@@ -101,7 +96,7 @@ var SurveyPage = {
                     this.errors = error.response.data.errors;
                   }.bind(this)
             );
-        });
+        
     },
   }
 };
@@ -137,58 +132,23 @@ var ServicesIndexPage = {
   template: "#services-index-page",
   data: function() {
     return {
-      services: []
-    };
-  },
-  created: function() {
-    axios.get("/law_services")
-      .then(function(response) {
-        this.law_services = response.data;
-      }.bind(this));
-  },
-};
-
-var LawServicesIndexPage = {
-  template: "#law-services-index-page",
-  data: function() {
-    return {
-      lawServices: []
-    };
-  },
-  created: function() {
-    axios.get("/law_services")
-      .then(function(response) {
-        this.law_services = response.data;
-      }.bind(this));
-  },
-};
-var SheltersIndexPage = {
-  template: "#shelters-index-page",
-  data: function() {
-    return {
+      law_services: [],
+      mental_health_services: [],
       shelters: []
     };
   },
   created: function() {
-    axios.get("/shelters")
-      .then(function(response) {
-        this.shelters = response.data;
-      }.bind(this));
+    axios.get("/law_services").then(function(response){
+      this.law_services=response.data;
+    }.bind(this));
+    axios.get("/shelters").then(function(response){
+      this.shelters=response.data;
+    }.bind(this));
+    axios.get("/mental_health_services").then(function(response){
+      this.mental_health_services=response.data;
+    }.bind(this));
   },
-};
-var MentalHealthServicesIndexPage = {
-  template: "#mental-health-services-index-page",
-  data: function() {
-    return {
-      mentalHealthServices: []
-    };
-  },
-  created: function() {
-    axios.get("/law_services")
-      .then(function(response) {
-        this.me_services = response.data;
-      }.bind(this));
-  },
+
 };
 
 var UserServicesIndexPage = {
@@ -213,21 +173,55 @@ var UserServicesIndexPage = {
     }
 };
 
-var ServicesShowPage = {
-  template: "#services-show-page",
+var LawServicesShowPage = {
+  template: "#law_services-show-page",
   data: function() {
     return {
-      services: []
+      law_service: []
     };
   },
   created: function() {
-    axios.get("/services/" + this.$route.params.id).then(function(response) {
-        this.product = response.data;
+    axios.get("/law_services/" + this.$route.params.id).then(function(response) {
+        this.law_service = response.data;
       }.bind(this));
   },
   methods: {},
   computed: {}
 };
+
+var SheltersShowPage = {
+  template: "#shelters-show-page",
+  data: function() {
+    return {
+      shelter: []
+    };
+  },
+  created: function() {
+    axios.get("/shelters/" + this.$route.params.id).then(function(response) {
+        this.shelter = response.data;
+      }.bind(this));
+  },
+  methods: {},
+  computed: {}
+};
+
+var MentalHealthServicesShowPage = {
+  template: "#mental-heatlh-services-show-page",
+  data: function() {
+    return {
+      mental_heatlh_service: []
+    };
+  },
+  created: function() {
+    axios.get("/mental_heatlh_services/" + this.$route.params.id).then(function(response) {
+        this.mental_heatlh_service = response.data;
+      }.bind(this));
+  },
+  methods: {},
+  computed: {}
+};
+
+
 var LoginPage = {
   template: "#login-page",
   data: function() {
@@ -278,9 +272,9 @@ var router = new VueRouter({
 
 
           { path: "/services", component: ServicesIndexPage },
-          { path: "/law_services", component: LawServicesIndexPage },
-          { path: "/shelters", component: SheltersIndexPage },
-          { path: "/mental_health_services", component: MentalHealthServicesIndexPage },
+          { path: "/law_services/:id", component: LawServicesShowPage },
+          { path: "/shelters/:id", component: SheltersShowPage },
+          { path: "/mental_health_services/:id", component: MentalHealthServicesShowPage },
 
           
           // { path: "/services?=law", component: LawServicesIndexPage },
@@ -288,7 +282,6 @@ var router = new VueRouter({
           // { path: "/services?=shelter", component: SheltersIndexPage },
 
           // { path: "/services/new", component: ServicesNewPage },
-          { path: "/services/:id", component: ServicesShowPage },
           // { path: "/services/8/edit", component: ServicesEditPage },
           // { path: "/services/:id/delete", component: ServicesDestoryPage },
           // { path: "/signup", component: SignupPage },

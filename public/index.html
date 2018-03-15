@@ -490,30 +490,6 @@
   </div>
 </template>
 
-<template id="law-services-index-page">
-  <div class="vue-component">
-    <div class="container">
-      <div class="row">
-        <div v-for="law_service in law_services" class="col-md-4">
-
-        <div class="card bg-dark text-white text-center">
-          <div class="card-header"> {{service.servicable_type}}</div>
-          <div class="card-body">
-            <h4 class="card-title">
-             {{ service.name }}
-            </h4>
-            <blockquote class="card-body quote">
-              <p class="card-title"> Phone Number: {{ service.phone_number }}</p>
-              <p class="card-title">Address: {{ service.address }} {{ service.city }} {{ service.state }} {{ service.zip }} </p>
-            </blockquote>
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <template id="match-page">
   <div class="vue-component">
     <div class="container">
@@ -532,36 +508,84 @@
   <div class="vue-component">
     <div class="container">
       <div class="row">
-        <div v-for="law_service in law_services" class="col-md-4">
 
-    <!-- 
-          <div class="card">
-            <img class="card-img-top img-fluid" src="assets/img/backgrounds/picjumbo.com_P1010041.jpg" alt="Card image cap">
-            <div class="card-body">
-              <h4 class="card-title">
-                {{ service.name }}
-              </h4>
-              <p class="card-title"> Phone Number: {{ service.phone_number }}</p>
-              <p class="card-title">Address: {{ service.address }} {{ service.city }} {{ service.state }} {{ service.zip }} </p>
-              <a v-bind:href="'/#/services/' + service.id" class="btn btn-dark">See More Info</a> 
-            </div>
-          </div>
- -->
+        <h2 class="text-center font-weight-bold my-0">
+          Law Services
+        </h2>
+
+        <div v-for="law_service in law_services" class="col-md-4">
  
-          
             <div class="card card-body text-center">
               <h4 class="card-title">
                 {{law_service.name}}
               </h4>
               <p class="card-text">Phone Number: {{ law_service.phone_number }}</p>
               <p class="card-title">Address: {{ law_service.address }} {{ law_service.city }} {{ law_service.state }} {{ law_service.zip }} </p>
-              <a v-bind:href="'/#/services/' + service.id" class="btn btn-dark">See More Info</a>
+              <a v-bind:href="'/#/law_services/' + law_service.id" class="btn btn-dark">See More Info</a>
             </div> 
           
-       
-         
         </div>
+
+        <div v-for="shelter in shelters" class="col-md-4">
+        
+            <div class="card card-body text-center">
+              <h4 class="card-title">
+                {{shelter.name}}
+              </h4>
+              <p class="card-text">Phone Number: {{ shelter.phone_number }}</p>
+              <p class="card-title">Address: {{ shelter.address }} {{ shelter.city }} {{ shelter.state }} {{ shelter.zip }} </p>
+              <a v-bind:href="'/#/shelters/' + shelter.id" class="btn btn-dark">See More Info</a>
+            </div> 
+          
+        </div>
+
+        <div v-for="mental_health_service in mental_health_services" class="col-md-4">
+        
+            <div class="card card-body text-center">
+              <h4 class="card-title">
+                {{mental_health_service.name}}
+              </h4>
+              <p class="card-text">Phone Number: {{ mental_health_service.phone_number }}</p>
+              <p class="card-title">Address: {{ mental_health_service.address }} {{ mental_health_service.city }} {{ mental_health_service.state }} {{ mental_health_service.zip }} </p>
+              <a v-bind:href="'/#/mental_health_services/' + mental_health_service.id" class="btn btn-dark">See More Info</a>
+            </div> 
+          
+        </div>
+
       </div>
+    </div>
+  </div>
+</template>
+
+<template id="law_services-show-page">
+  <div class="vue-component">
+    <div class="container">
+      <h1>{{ law_service.name }}</h1>
+      <h4>Descrition: {{ law_service.specialty }} </h4>
+      <h3>Phone Number: {{ law_service.phone_number }}</h3>
+      <h3>Address: {{ law_service.address }} {{ law_service.city }} {{ law_service.state }} {{ law_service.zip }}</h3>
+    </div>
+  </div>
+</template>
+
+<template id="shelters-show-page">
+  <div class="vue-component">
+    <div class="container">
+      <h1>{{ shelter.name }}</h1>
+      <h4>Descrition: {{ shelter.specialty }}</h4>
+      <h3>Phone Number: {{ shelter.phone_number }}</h3>
+      <h3>Address: {{ shelter.address }} {{ shelter.city }} {{ shelter.state }} {{ shelter.zip }}</h3>
+    </div>
+  </div>
+</template>
+
+<template id="mental-heatlh-services-show-page">
+  <div class="vue-component">
+    <div class="container">
+      <h1>{{ mental_heatlh_service.name }}</h1>
+      <h4>Descrition: {{ mental_heatlh_service.specialty }}</h4>
+      <h3>Phone Number: {{ mental_heatlh_service.phone_number }}</h3>
+      <h3>Address: {{ mental_heatlh_service.address }} {{ mental_heatlh_service.city }} {{ mental_heatlh_service.state }} {{ mental_heatlh_service.zip }}</h3>
     </div>
   </div>
 </template>
@@ -591,16 +615,17 @@
   </div>
 </template>
 
-<template id="services-show-page">
+<template id="mental-heatlh-services-show-page">
   <div class="vue-component">
     <div class="container">
-      <h1>{{ service.name }}</h1>
-      <h4>Descrition: {{ service.specialty }}</h4>
-      <h3>Phone Number: {{ service.phone_number }}</h3>
-      <h3>Address: {{ service.address }} {{ service.city }} {{ service.state }} {{ service.zip }}</h3>
+      <h1>{{ mental_heatlh_service.name }}</h1>
+      <h4>Descrition: {{ mental_heatlh_service.specialty }}</h4>
+      <h3>Phone Number: {{ mental_heatlh_service.phone_number }}</h3>
+      <h3>Address: {{ mental_heatlh_service.address }} {{ mental_heatlh_service.city }} {{ mental_heatlh_service.state }} {{ mental_heatlh_service.zip }}</h3>
     </div>
   </div>
 </template>
+
   
 <template id="login-page">
   <div class="vue-component">

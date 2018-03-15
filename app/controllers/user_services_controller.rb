@@ -32,8 +32,7 @@ class UserServicesController < ApplicationController
       services = MentalHealthService.all 
     elsif service_type == "law_services"
       services = LawService.all
-    end 
-    p current_user
+    end
 
     matches = 0 
 
