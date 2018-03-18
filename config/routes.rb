@@ -3,6 +3,10 @@ Rails.application.routes.draw do
   post 'user_token' => 'user_token#create'
   post "/users" => 'users#create'
 
+  post "/users_mental_health" => 'user_services#create_mental'
+  post "/users_law_service" => 'user_services#create_law'
+  post "/users_shelter" => 'user_services#create_shelter'
+
   get "/services" => 'services#index'
 
   get "/mental_health_services" => 'mental_health_services#index'
@@ -24,6 +28,8 @@ Rails.application.routes.draw do
   delete "/law_services/:id" => 'law_services#destroy'
 
   get "/user_services" => 'user_services#index'
+  get "/user_services/:id" => 'user_services#show'
   post "/user_services" => 'user_services#create'
+  patch "/user_services/:id" => 'user_services#update'
 
 end

@@ -56,12 +56,21 @@
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.js"></script>
+  
+   <!--  <iframe src="https://snazzymaps.com/embed/56329" width="100%" height="600px" style="border:none;"></iframe> -->
+    <script async defer
+         src="https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}">
+      </script>
+
     <script src="index.js" defer></script>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- <link rel="stylesheet" href="services.css"> -->
+    <link rel="stylesheet" href="services.css">
     
     <!--Plugin: Retina.js (high def image replacement) - @see: http://retinajs.com/-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/retina.js/1.3.0/retina.min.js"></script>
+
+
   </head>
   
   <!-- ======== @Region: body ======== -->
@@ -258,24 +267,7 @@
           
         </div>
         <hr class="my-0 hr-blank op-2" />
-        <!--@todo: replace with company copyright details-->
-       <!--  <div class="bg-inverse-dark text-sm py-3">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-6">
-                <p class="mb-0">Site template by <a href="appstraptheme.com" class="footer-link">ConnectR</a> | Copyright 2018 &copy; AppStrap</p>
-              </div>
-              <div class="col-md-6">
-                <ul class="list-inline footer-links float-md-right mb-0">
-                  <li class="list-inline-item"><a href="#">Terms</a></li>
-                  <li class="list-inline-item"><a href="#">Privacy</a></li>
-                  <li class="list-inline-item"><a href="#">Contact Us</a></li>
-                </ul>
-              </div>
-            </div>
-            <a href="#top" class="btn btn-icon btn-dark pos-fixed pos-b pos-r mr-3 mb-3 scroll-state-hidden" title="Back to top" data-scroll="scroll-state"><i class="fa fa-chevron-up"></i></a>
-          </div>
-        </div> -->
+
       </footer>
         <!--@modal - login modal-->
         <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -330,6 +322,7 @@
     <script src="assets/js/custom-script.js"></script>
     <!--AppStrap scripts mainly used to trigger libraries/plugins -->
     <script src="assets/js/script.min.js"></script>
+
   </body>
 </html>
 
@@ -411,10 +404,11 @@
 
       <div class="form-group">
         <label>What types of resources are you seeking?</label> <br>
-        <input type="radio" name="serviceType" value="law_services" v-model="serviceType"> Law Services<br>
-        <input type="radio" name="serviceType" value="mental_health_services" v-model="serviceType"> Mental Health Services<br>
-        <input type="radio" name="serviceType" value="shelters" v-model="serviceType">Shelters<br>
+        <input type="checkbox" value="'law_services'" v-model="lawService"> Law Services<br>
+        <input type="checkbox" value="'mental_health_services'" v-model="mentalHealthService"> Mental Health Services<br>
+        <input type="checkbox" value="'shelters'" v-model="shelter">Shelters<br>
       </div>
+
       <div class="form-group">
         <label>Name:</label>
         <input type="text" class="form-control" v-model="name">
@@ -429,8 +423,8 @@
       </div>
       <div class="form-group">
         <label>Are You Currently Experiencing Homelessness?</label> <br>
-          <input type="radio" name="homelessness" value="yes"> Yes<br>
-          <input type="radio" name="homelessness" value="no" > No<br>
+          <input type="radio" name="homelessness" value="'yes'"> Yes<br>
+          <input type="radio" name="homelessness" value="'no'" > No<br>
       </div>
       <div class="form-group">
         <label>When did you first become homeless?</label>
@@ -462,8 +456,8 @@
       </div>
       <div class="form-group">
         <label>Are you a survivor of domestic violence?</label> <br>
-        <input type="radio" name="domestic_violence" value="yes" v-model="domesticViolenceSurvivor"> Yes<br>
-        <input type="radio" name="domestic_violence" value="no" v-model="domesticViolenceSurvivor"> No<br>
+        <input type="radio" v-model="domesticViolenceSurvivor" :value="'yes'" > Yes<br>
+        <input type="radio" v-model="domesticViolenceSurvivor" :value="'no'"> No<br>
       </div>
       <div class="form-group">
         <label>What is the size of your household?</label>
@@ -485,7 +479,7 @@
         <label>Password confirmation:</label>
         <input type="password" class="form-control" v-model="passwordConfirmation">
       </div>
-      <button class="btn btn-primary" v-on:click="submit()">Submit</button>
+      <button id="surveyButton" class="btn btn-primary" v-on:click="submit()">Submit</button>
     </div>
   </div>
 </template>
@@ -495,9 +489,9 @@
     <div class="container">
       <div class="form-group">
         <label>What types of resources are you seeking?</label> <br>
-        <input type="radio" name="serviceType" value="law_services" v-model="serviceType"> Law Services<br>
-        <input type="radio" name="serviceType" value="mental_health_services" v-model="serviceType"> Mental Health Services<br>
-        <input type="radio" name="serviceType" value="shelters" v-model="serviceType">Shelters<br>
+        <input type="checkbox" value="'law_services'" v-model="lawService"> Law Services<br>
+        <input type="checkbox" value="'mental_health_services'" v-model="mentalHealthService"> Mental Health Services<br>
+        <input type="checkbox" value="'shelters'" v-model="shelter">Shelters<br>
       </div>
         <button class="btn btn-primary" v-on:click="submit()">Submit</button>
     </div>
@@ -593,21 +587,22 @@
 
 <template id="user-services-index-page">
   <div class="vue-component">
-    <div class="container">
+    <div class="container" id="about">
       <div class="row">
-        <div v-for="user_service in user_services" class="col-md-4">
-
-        <div class="card bg-dark text-white text-center">
-          <div class="card-header"> {{user_service.name}}</div>
-          <div class="card-body">
-            <h4 class="card-title">
-             {{ user_service.name }}
-            </h4>
-            <blockquote class="card-body quote">
-              <p class="card-title"> Phone Number: {{ user_service.phone_number }}</p>
-              <p class="card-title">Address: {{ user_service.address }} {{ user_service.city }} {{ user_service.state }} {{ user_service.zip }} </p>
-            </blockquote>
-
+        <!-- sidebar -->
+        <div class="col-md-3">
+          
+          <!-- Sections Menu-->
+          <div class="nav-section-menu">
+            <h4 class="text-left font-weight-bold my-0" >Your Service Matches! </h4>
+            <div class="nav nav-list">
+              <span class="nav-header ">Services</span> 
+              <a v-for="user_service in user_services" v-bind:href="'/#/user_services/' + user_service.id" class="nav-link first active">
+                {{ user_service.name }}
+                <small> {{ user_service.servicable_type }} </small>
+                <i class="fa fa-angle-right"></i>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -615,17 +610,108 @@
   </div>
 </template>
 
-<template id="mental-heatlh-services-show-page">
+<template id="user-services-show-page">
   <div class="vue-component">
-    <div class="container">
-      <h1>{{ mental_heatlh_service.name }}</h1>
-      <h4>Descrition: {{ mental_heatlh_service.specialty }}</h4>
-      <h3>Phone Number: {{ mental_heatlh_service.phone_number }}</h3>
-      <h3>Address: {{ mental_heatlh_service.address }} {{ mental_heatlh_service.city }} {{ mental_heatlh_service.state }} {{ mental_heatlh_service.zip }}</h3>
-    </div>
-  </div>
-</template>
+   <div id="content">
+     <div class="container">
+       <!-- <div class="row"> -->
+         <!-- sidebar -->
+         <!-- <div class="user-services-nav" class="col-md-3"> -->
+           
+           <!-- Sections Menu-->
+          <!--  <div class="nav-section-menu">
+             <h4 class="text-left font-weight-bold my-0" >Your Service Matches! </h4>
+               <div class="nav nav-list">
+                 <span class="nav-header ">Services</span> 
+                 <a v-for="user_service in user_services" v-bind:href="'/#/user_services/' + user_service.id" class="nav-link first active">
+                   {{ user_service.name }}
+                   <small> {{ user_service.servicable_type }} </small>
+                   <i class="fa fa-angle-right"></i>
+                 </a>
+               </div>
+           </div>
+         </div> -->
+         <!--main content-->
+         <div class="col-md-15">
+           <h2 class="title-divider">
+             <span>{{ user_service.name }} </span></span>
+             <small>Details</small>
+           </h2>
+           <div class="row">
+             <div class="col-md-5">
 
+              <!-- <div id="services-show-page"></div> -->
+
+                <h4 id="services-show-page"> Description: {{ user_service.speciality }} </h4><br><br>
+             <!--    <h4 id="services-show-page"> Best way to contact: {{ user_service.prefered_contact }} </h4><br><br> -->
+                <h4 id="services-show-page"> Contact Stage: 
+                 
+                  <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{user_service.status}} </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                    <button class="btn btn-light dropdown-item" v-on:click="updateStatus('not_contacted')">Not Contacted</button> 
+                    <button class="btn btn-light dropdown-item" v-on:click="updateStatus('contacted')">Contacted - awaiting reply </button> 
+                    <button class="btn btn-light dropdown-item" v-on:click="updateStatus('intake_complete')">Intake Complete</button> </div>
+                
+                </h4><br><hr>
+
+                <h5 class="notes-box" id="services-show-page"> Notes: {{ user_service.notes }} </h5><br>
+                <button class="btn btn-dark small" v-on:click="toggleNoteBox()">Click here to add notes!</button> <br>
+
+            <!--   </div> -->
+
+               <form class="user-services-buttons" id="notes-input" action="#" role="form"> <br>
+                <div class="form-group"> 
+                  <textarea rows="5" class="form-control" form="notes-input" v-model="notes" placeholder="Notes about the serivce. Such as - called twice, awaiting reply."></textarea>
+                  <button class="btn btn-dark" v-on:click="updateNotes()">Add Note</button>
+                </div>
+              </form>
+
+
+              
+              <button class="btn btn-dark" v-on:click="toggleMessageBox()">Click here send this service a message </button> <br>
+
+               <div class="user-services-buttons" id="message-input" class="form-group">
+                 <label class="sr-only" for="contact-message">Message</label>
+                 <textarea rows="5" class="form-control" id="contact-message" placeholder="Message"></textarea>
+                 <small id="contact-message-help" class="form-text text-muted">Your message and details.</small>
+                 <input type="button" class="btn btn-dark" value="Send Message">
+               </div>
+             </div>
+
+             <div class="col-md-7">
+               <p>
+                 <abbr title="Phone"><i class="fa fa-phone"></i></abbr>
+                 {{user_service.phone_number}}
+               </p>
+               <p>
+                 <abbr title="Email"><i class="fa fa-envelope"></i></abbr>
+                 {{user_service.email}}
+               </p>
+               <p>
+                 <abbr title="Website"><i class="fa fa-desktop"></i></abbr>
+                 {{user_service.website}} 
+               <p>
+                 <abbr id="full-address" title="Address"><i class="fa fa-home"></i></abbr>
+                 {{full_address}}
+               </p> <br> <br> 
+
+               <div class="google-map" v-bind:id="mapName"></div>
+
+             </div>
+
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+  </div>
+
+</template>
+<!-- 
+<template>
+  <div class="google-map" v-bind:id="mapName"></div>
+</template> -->
   
 <template id="login-page">
   <div class="vue-component">

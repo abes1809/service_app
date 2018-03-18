@@ -42,6 +42,7 @@
     "linearicons": "^1.0.1",
     "map-stream": "^0.0.7",
     "popper.js": "^1.12.9",
-    "retinajs": "^2.0.0"
+    "retinajs": "^2.0.0",
+    "vue-google-maps": "^0.1.21"
   }
 }

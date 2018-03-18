@@ -547,7 +547,8 @@ button.list-group-item-primary:focus {
 .nav-section-menu.nav .active .nav-link i,
 .nav-section-menu .nav .active .nav-link:hover i,
 .nav-section-menu.nav .active .nav-link:hover i {
-  color: #55A79A !important;
+  color:  !important;
+  overflow: scroll;
 }
 
 .nav-section-menu .nav .nav-link.active,
@@ -559,7 +560,8 @@ button.list-group-item-primary:focus {
 .nav-section-menu .nav .active .nav-link:hover,
 .nav-section-menu.nav .active .nav-link:hover {
   border-left-color: #55A79A;
-  color: #55A79A;
+  color: ;
+  overflow: scroll;
 }
 
 @media (min-width: 768px) {

@@ -7,6 +7,8 @@ class MentalHealthService < ApplicationRecord
     qualified = true
 
     qualifiers.each do |qualifier|
+      puts "------------THIS IS THE USER------------" 
+      puts user
       p qualifier.id
       unless eval("user.#{qualifier.name} #{qualifier.comparison} #{qualifier.target_value}")
         qualified = false
