@@ -215,7 +215,7 @@
 
       <!-- ======== @Region: #footer ======== -->
       <footer id="footer" class="p-0">
-        <div class="container pt-6 pb-5">
+        <div class="container pt-6 pb-6">
           <div class="row">
             <div class="col-md-4">
               <!--@todo: replace with company contact details-->
@@ -247,23 +247,7 @@
               <p>Making the web a prettier place one template at a time! We make beautiful, quality, responsive Drupal & web templates!</p>
             </div>
             
-            <div class="col-md-4">
-              <h4 class="text-uppercase text-white">
-                Newsletter
-              </h4>
-              <p>Stay up to date with our latest news and product releases by signing up to our newsletter.</p>
-              <!--@todo: replace with mailchimp code-->
-              <form>
-                <div class="input-group">
-                  <label class="sr-only" for="email-field">Email</label>
-                  <input type="text" class="form-control" id="email-field" placeholder="Email">
-                  <span class="input-group-append">
-                    <button class="btn btn-primary" type="button">Go!</button>
-                  </span>
-                </div>
-              </form>
-            </div>
-          </div>
+            
           
         </div>
         <hr class="my-0 hr-blank op-2" />
@@ -594,7 +578,7 @@
           
           <!-- Sections Menu-->
           <div class="nav-section-menu">
-            <h4 class="text-left font-weight-bold my-0" >Your Service Matches! </h4>
+            <h4 class="text-left font-weight-bold my-0" >Your Service Matches Below! </h4>
             <div class="nav nav-list">
               <span class="nav-header ">Services</span> 
               <a v-for="user_service in user_services" v-bind:href="'/#/user_services/' + user_service.id" class="nav-link first active">
@@ -602,6 +586,68 @@
                 <small> {{ user_service.servicable_type }} </small>
                 <i class="fa fa-angle-right"></i>
               </a>
+            </div>
+          </div>
+        </div>
+          <div class="col-md-9">
+            <h2 class="title-divider">
+              <span>Your <span class="font-weight-normal text-muted">Homepage</span></span>
+              <small>See below for more details!</small>
+            </h2>
+            
+            <!-- About company -->
+            <h4>
+              About Your Matches
+            </h4>
+            <p> You can find your matches to the left of this page. Click on the name to find more infomration about the service. You were matched with these services based on the infomration you discolsed in the matching survey. Although it is likely you will be able to access these services, it is important to contact the services before visiting them to ensure avalibility and qualification.</p>
+
+            <p>When you click on a serivce, you will see an option to update your contact with the service and add any notes. This is avaliable to you to keep track of communication and needed follow up.</p>
+            <h4 class="mt-4">
+              Tips for Navigating Social Services
+            </h4>
+            <p>Esca lenis ludus saluto wisi. Camur commodo ea gilvus pagus paratus saepius te. Illum nostrud nulla.</p>
+            <p>Abluo aliquip capto commodo esse hos ibidem nimis. Acsi dolore eros jus roto. Abigo diam paratus. Aliquip elit ibidem ludus modo plaga tation volutpat. Eum gravis ille lenis refoveo sed. Accumsan comis elit humo meus oppeto quis typicus ulciscor. Blandit camur gemino genitus jugis letalis lucidus macto. Abdo adipiscing commoveo decet eros metuo os persto utinam. Capto iusto pertineo praemitto sed. Abbas et modo occuro probo quae scisco venio vindico.</p>
+            <p>Amet imputo laoreet nulla pala. Abbas amet feugiat macto neque quis roto rusticus validus zelus. Aptent nisl velit. Aliquam causa consequat patria populus sed si typicus vulpes.</p>
+            
+            <div class="title-divider mt-4" id="stats">
+              <h3>
+                <span>Hotlines for<span class="font-weight-normal text-muted"> Immediate Help</span></span>
+                <small>Call 911 if you are in immediate danger.</small>
+              </h3>
+            </div>
+            <div class="row stats">
+              <div class="col-md-3 stat">
+                <div class="stat-header">1280</div>
+                <small>Happpy Customers</small>
+              </div>
+              <div class="col-md-3 stat">
+                <div class="stat-header">1634</div>
+                <small>GB Transfered</small>
+              </div>
+              <div class="col-md-3 stat">
+                <div class="stat-header">2143</div>
+                <small>Bugs Fixed</small>
+              </div>
+              <div class="col-md-3 stat">
+                <div class="stat-header">12</div>
+                <small>Share Holders</small>
+              </div>
+              <div class="col-md-3 stat">
+                <div class="stat-header">1280</div>
+                <small>Happpy Customers</small>
+              </div>
+              <div class="col-md-3 stat">
+                <div class="stat-header">1634</div>
+                <small>GB Transfered</small>
+              </div>
+              <div class="col-md-3 stat">
+                <div class="stat-header">2143</div>
+                <small>Bugs Fixed</small>
+              </div>
+              <div class="col-md-3 stat">
+                <div class="stat-header">12</div>
+                <small>Share Holders</small>
+              </div>
             </div>
           </div>
         </div>
@@ -614,29 +660,12 @@
   <div class="vue-component">
    <div id="content">
      <div class="container">
-       <!-- <div class="row"> -->
-         <!-- sidebar -->
-         <!-- <div class="user-services-nav" class="col-md-3"> -->
-           
-           <!-- Sections Menu-->
-          <!--  <div class="nav-section-menu">
-             <h4 class="text-left font-weight-bold my-0" >Your Service Matches! </h4>
-               <div class="nav nav-list">
-                 <span class="nav-header ">Services</span> 
-                 <a v-for="user_service in user_services" v-bind:href="'/#/user_services/' + user_service.id" class="nav-link first active">
-                   {{ user_service.name }}
-                   <small> {{ user_service.servicable_type }} </small>
-                   <i class="fa fa-angle-right"></i>
-                 </a>
-               </div>
-           </div>
-         </div> -->
          <!--main content-->
          <div class="col-md-15">
-           <h2 class="title-divider">
-             <span>{{ user_service.name }} </span></span>
-             <small>Details</small>
-           </h2>
+           <h1 class="title-divider">
+             <span>{{ user_service.name }} </span></span><br> 
+            <a id="teal-color" href="/#/user_services/"><h5>Back to Homepage</h5></a>
+           </h1>
            <div class="row">
              <div class="col-md-5">
 
@@ -660,7 +689,7 @@
 
             <!--   </div> -->
 
-               <form class="user-services-buttons" id="notes-input" action="#" role="form"> <br>
+               <form class="user-services-buttons" id="notes-input" role="form-group"> <br>
                 <div class="form-group"> 
                   <textarea rows="5" class="form-control" form="notes-input" v-model="notes" placeholder="Notes about the serivce. Such as - called twice, awaiting reply."></textarea>
                   <button class="btn btn-dark" v-on:click="updateNotes()">Add Note</button>
@@ -677,6 +706,7 @@
                  <small id="contact-message-help" class="form-text text-muted">Your message and details.</small>
                  <input type="button" class="btn btn-dark" value="Send Message">
                </div>
+
              </div>
 
              <div class="col-md-7">
@@ -694,9 +724,9 @@
                <p>
                  <abbr id="full-address" title="Address"><i class="fa fa-home"></i></abbr>
                  {{full_address}}
-               </p> <br> <br> 
+               </p> <br> 
 
-               <div class="google-map" v-bind:id="mapName"></div>
+               <div class="google-map" v-bind:id="mapName"></div> <br> <br> <br>
 
              </div>
 

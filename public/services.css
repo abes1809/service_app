@@ -47,6 +47,10 @@ body {
 
 }
 
+a {
+    color: #008080;
+}
+
 .notes-box{
 
     border-style:solid;

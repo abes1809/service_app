@@ -75,13 +75,12 @@ var SurveyPage = {
 
         axios 
           .post("/users", params)
-          .then(function(response) {
-          })
+          .then(function(response) {})
           .catch(
             function(error) {
               this.errors = error.response.data.errors;
             }.bind(this)
-          );
+          ).then(function() { 
           axios
             .post("/user_token", login_params)
             .then(function(response) {
@@ -96,45 +95,51 @@ var SurveyPage = {
                 this.email = "";
                 this.password = "";
               }.bind(this)
-            );
+            )})
+            .then(function(){
+              setTimeout(function() {
+                if (lawService === true) {
+                  axios.post("/users_law_service")
+                    .then(function(response) {})
+                    .catch(
+                          function(error) {
+                            this.errors = error.response.data.errors;
+                          }.bind(this)
+                      );
+                  }
+                }, 10000); 
 
-        if (lawService === true) {
-          axios.post("/users_law_service")
-            .then(function(response) {
-              router.push("/user_services");
-            })
-            .catch(
-                  function(error) {
-                    this.errors = error.response.data.errors;
-                  }.bind(this)
-            );
-        }
+                setTimeout(function() {
+                if (mentalHealthService === true) {
+                  axios.post("/users_mental_health")
+                    .then(function(response) {
+                    })
+                    .catch(
+                          function(error) {
+                            this.errors = error.response.data.errors;
+                          }.bind(this)
+                      );
+                  }
+                }, 45000); 
+                setTimeout(function() {
+                if (shelter === true) {
+                  axios.post("/users_shelter")
+                    .then(function(response) {
+                      console.log("SHIBBAA")
+                    })
+                    .catch(
+                          function(error) {
+                            this.errors = error.response.data.errors;
+                          }.bind(this)
+                      );
+                  }
+                }, 90000); 
 
-        if (mentalHealthService === true) {
-          axios.post("/users_mental_health")
-            .then(function(response) {
-              router.push("/user_services");
-            })
-            .catch(
-                  function(error) {
-                    this.errors = error.response.data.errors;
-                  }.bind(this)
-            );
-        }
+            });
 
-        if (shelter === true) {
-          axios.post("/users_shelter")
-            .then(function(response) {
-              console.log("SHIBBAA")
-              router.push("/user_services");
-            })
-            .catch(
-                  function(error) {
-                    this.errors = error.response.data.errors;
-                  }.bind(this)
-            );
-        }
-        
+        setTimeout(function() {
+          router.push("/user_services");
+        }, 95000);      
     },
   }
 };
@@ -213,24 +218,6 @@ var UserServicesIndexPage = {
     }
 };
 
-// var GoolgeMaps = { 
-//   template: "#google-map"
-//   data: function () {
-//     return {
-//       mapName: this.name + "-map",
-//     }
-//   }
-//   mounted: function () {
-//       const element = document.getElementById(this.mapName)
-//       const options = {
-//         zoom: 14,
-//         center: new google.maps.LatLng(51.501527,-0.1921837)
-//       }
-//       const map = new google.maps.Map(element, options);
-//     }
-//   };
-// };
-
 
 var UserServicesShowPage = {
   template: "#user-services-show-page",
@@ -246,11 +233,6 @@ var UserServicesShowPage = {
       status: "",
 
       mapName: this.name + "-map",
-      mapLoaded: false,
-      markerCoordinate: {
-            latitude: 41.881832,
-            longitude: -87.623177
-            },
       map: null,
     };
   },
@@ -263,35 +245,37 @@ var UserServicesShowPage = {
   },  
 
   updated: function () {
+      this.$nextTick(function () {
 
-      geocoder = new google.maps.Geocoder();
+      console.log("UGH")
 
-      var latlng = new google.maps.LatLng(39.881832, -84.623177);
+        geocoder = new google.maps.Geocoder();
 
-      var mapOptions = {
-                        zoom: 13,
-                        center: latlng,
-                        styles: [{"featureType":"administrative","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"simplified"}]},{"featureType":"water","stylers":[{"visibility":"simplified"}]},{"featureType":"transit","stylers":[{"visibility":"simplified"}]},{"featureType":"landscape","stylers":[{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"visibility":"off"}]},{"featureType":"road.local","stylers":[{"visibility":"on"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"water","stylers":[{"color":"#84afa3"},{"lightness":52}]},{"stylers":[{"saturation":-17},{"gamma":0.36}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"color":"#3f518c"}]}],
-                      }
+        var latlng = new google.maps.LatLng(39.881832, -84.623177);
 
-      map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
+        var mapOptions = {
+                          zoom: 13,
+                          center: latlng,
+                          styles: [{"featureType":"administrative","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"simplified"}]},{"featureType":"water","stylers":[{"visibility":"simplified"}]},{"featureType":"transit","stylers":[{"visibility":"simplified"}]},{"featureType":"landscape","stylers":[{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"visibility":"off"}]},{"featureType":"road.local","stylers":[{"visibility":"on"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"water","stylers":[{"color":"#84afa3"},{"lightness":52}]},{"stylers":[{"saturation":-17},{"gamma":0.36}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"color":"#3f518c"}]}],
+                        }
 
-      var geoAddress = this.full_address
+        map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
 
-      geocoder.geocode( { 'address' : geoAddress}, function(results, status) {
-            if (status == 'OK') {
+        var geoAddress = this.full_address
 
-              console.log(results[0].geometry.location)
+        geocoder.geocode( { 'address' : geoAddress}, function(results, status) {
+              if (status == 'OK') {
 
-              map.setCenter(results[0].geometry.location);
-              var marker = new google.maps.Marker({
-                  map: map,
-                  position: results[0].geometry.location
-              });
-            } else {
-              alert('Geocode was not successful for the following reason: ' + status);
-            }
-          });
+                map.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+              } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+              }
+            });
+      });
     },
 
   methods: {
@@ -304,7 +288,6 @@ var UserServicesShowPage = {
         axios
           .patch("/user_services/" + this.$route.params.id, params)
           .then(function(response) {
-            console.log(response.data.id)
             router.push("/user_services/" + response.data.id);
           }.bind(this))
           .catch(
@@ -318,8 +301,7 @@ var UserServicesShowPage = {
         axios
           .patch("/user_services/" + this.$route.params.id, {status: new_status})
           .then(function(response) {
-            console.log(response.data.id)
-            router.push("/user_services/" + response.data.id);
+            router.push("/user_services/" + this.$route.params.id);
           }.bind(this))
           .catch(
             function(error) {
@@ -385,11 +367,12 @@ var LogoutPage = {
 var router = new VueRouter({
   routes: [
           { path: "/", component: HomePage },
-          { path: "/#", component: HomePage },
+          { path: "/#/", component: HomePage },
           { path: "/survey-page", component: SurveyPage},
           { path: "/match-page", component: MatchPage},
 
           { path: "/user_services/:id", component: UserServicesShowPage },
+          { path: "/services/", component: ServicesIndexPage },
           
           // { path: "/services?=law", component: LawServicesIndexPage },
           // { path: "/services?=mental", component: MentalHealthServicesIndexPage },

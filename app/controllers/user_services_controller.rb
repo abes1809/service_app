@@ -16,9 +16,11 @@ class UserServicesController < ApplicationController
 
   def show
 
+    user = current_user
+
     @user_service = UserService.find(params[:id])
 
-    @user_service = @user_service.show_match(@user_service)  
+    @user_service = @user_service.show_match(@user_service, user)  
 
     render 'show.json.jbuilder'
 
@@ -28,7 +30,7 @@ class UserServicesController < ApplicationController
 
     @user_service = UserService.find(params[:id])
 
-    puts @user_service
+    puts params[:status]
 
     @user_service.status = params[:status] || @user_service.status 
     @user_service.notes = params[:notes] || @user_service.notes
@@ -98,6 +100,7 @@ class UserServicesController < ApplicationController
                                           status: 1,
                                           notes: ""
                                           )
+
           matches = matches += 1
           @user_service.save
         end
