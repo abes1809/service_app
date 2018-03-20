@@ -17,6 +17,13 @@ json.latitude user_service[1].contact_info.latitude
 json.longitude user_service[1].contact_info.longitude
 json.full_address user_service[1].contact_info.full_address
 
+json.user_full_address user_service[2].full_address
+json.user_latitude user_service[2].latitude
+json.user_longitude user_service[2].longitude
+
+
+
+
 
 
 

@@ -41,13 +41,6 @@ var SurveyPage = {
   methods: {
     submit: function () {
 
-      // var service_params = {
-      //                       lawService: this.lawService,
-      //                       shelter: this.shelter,
-      //                       mentalHealthService: this.mentalHealthService
-      //                       }
-
-
       var params = {
         law: this.lawService || false, 
         mental: this.mentalHealthService || false, 
@@ -164,23 +157,14 @@ var UserServicesIndexPage = {
     return {
       user_services: [],
       errors: [],
-      coordinates: this.coordinates, 
+
       mapName: this.name + "-map",
-      map: null,
-      bounds: null,
-      markers: [],
     };
   },
   created: function() {
     axios.get("/user_services")
       .then(function(response) {
         this.user_services = response.data;
-        var coordinates = [];
-        response.data.forEach(function(service) { 
-          var coordinate = {latitude: service.latitude, longitude: service.longitude}
-          coordinates.push(coordinate)
-        });
-        this.coordinates = coordinates;
       }.bind(this))
       .catch(
         function(error) {
@@ -188,42 +172,83 @@ var UserServicesIndexPage = {
           router.push("/login");
         }.bind(this)
       );
+
     },
 
     updated: function () {
         this.$nextTick(function () {
 
-        this.bounds = new google.maps.LatLngBounds();
+        service_data = []
 
-        const mapCentre = ({lat: this.coordinates[0]["latitude"], long: this.coordinates[0]["longitude"]})
+        this.user_services.forEach(function(service) {
+          var data = {
+                      latitude: service.latitude,
+                      longitude: service.longitude,
+                      name: service.name,
+                      address: service.full_address,
+                      type: service.servicable_type,
+                      distance: service.distance
+          }
+          service_data.push(data)
+        });
+
+
+        var userData = {
+                        latitude: this.user_services[0].user_latitude,
+                        longitude: this.user_services[0].user_longitude,
+                        address: this.user_services[0].user_full_address
+
+        };
+
+        service_data.push(userData);
+
+        var length = service_data.length 
+        var index = 0 
+
+        const bounds = new google.maps.LatLngBounds();
 
         const mapOptions = {
-                          zoom: 15,
-                          center: new google.maps.LatLng(mapCentre['lat'], mapCentre["long"]),
+                          zoom: 20,
+                          center: new google.maps.LatLng(service_data[0]["latitude"], service_data
+                          [0]["longitude"]),
                           styles: [{"featureType":"administrative","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"simplified"}]},{"featureType":"water","stylers":[{"visibility":"simplified"}]},{"featureType":"transit","stylers":[{"visibility":"simplified"}]},{"featureType":"landscape","stylers":[{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"visibility":"off"}]},{"featureType":"road.local","stylers":[{"visibility":"on"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"water","stylers":[{"color":"#84afa3"},{"lightness":52}]},{"stylers":[{"saturation":-17},{"gamma":0.36}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"color":"#3f518c"}]}],
                         }
 
-        this.map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
+        const map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
+        var infoWindow = new google.maps.InfoWindow();
 
+        service_data.forEach(function(service){
+            const position = new google.maps.LatLng(service["latitude"], service["longitude"]);
 
-        // const markers = []
+            if (index === 10) {
+              var marker = new google.maps.Marker({ 
+                position,
+                map,
+                title: "Your Input Address",
+                icon: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
+              });
+              var content = "<div style = 'width:300px;min-height:10px'>" + "Your disclosed address/location" + "</div>"; 
+            }
+            else {
+              var marker = new google.maps.Marker({ 
+                position,
+                map,
+                title: service["name"]
+              });
+              var content = "<div style = 'width:300px;min-height:10px'>" + "Name: " +service.name + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Address: " + service.address + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Service Type: " + service.type + "</div>";
+            }
 
-        this.coordinates.forEach(function(coord){
-            const position = new google.maps.LatLng(coord["latitude"], coord["longitude"]);
-            const marker = new google.maps.Marker({ 
-              position,
-              map: this.map
-            });
-            console.log({lat: coord["latitude"], long: coord["longitude"]});
-            console.log(marker);
-            this.markers.push(marker)
-              this.map.fitBounds(this.bounds.extend(position))
+            map.fitBounds(bounds.extend(position));
+
+            index = index += 1;
+            (function (marker, service) {
+                   google.maps.event.addListener(marker, "click", function (e) {
+                       infoWindow.setContent(content);
+                       infoWindow.open(map, marker);
+                   });
+               })(marker, service);
+
           });
-              // var map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
-              // var marker = new google.maps.Marker({
-              //   position: service_marker,
-              //   map: map
-              // });
 
       });
 
@@ -239,22 +264,18 @@ var UserServicesShowPage = {
   data: function() {
     return {
       user_service: [],
-      lat: this.latitude,
-      log: this.longitude,
 
       notes: "",
       status: "",
 
       mapName: this.name + "-map",
-      map: null,
+      // map: null,
     };
   },
 
   created: function() {
     axios.get("/user_services/" + this.$route.params.id).then(function(response) {
         this.user_service = response.data
-        this.latitude = response.data.latitude
-        this.longitude = response.data.longitude
         this.status = response.data.status;
       }.bind(this));
   },  
@@ -264,20 +285,71 @@ var UserServicesShowPage = {
 
       console.log("UGH")
 
-        var service_marker = {lat: this.latitude, lng: this.longitude}
+        var service_data = [{
+                    latitude: this.user_service.latitude,
+                    longitude: this.user_service.longitude,
+                    name: this.user_service.name,
+                    address: this.user_service.full_address,
+                    type: this.user_service.servicable_type,
+                    distance: this.user_service.distance
+        }]
 
-        var mapOptions = {
-                          zoom: 15,
-                          center: service_marker,
+        var userData = {
+                        latitude: this.user_service.user_latitude,
+                        longitude: this.user_service.longitude,
+                        address: this.user_service.user_full_address,
+        }
+        service_data.push(userData);
+
+        var length = service_data.length 
+        var index = 0 
+
+        const bounds = new google.maps.LatLngBounds();
+
+        const mapOptions = {
+                          zoom: 20,
+                          center: new google.maps.LatLng(service_data["latitude"], service_data
+                          ["longitude"]),
                           styles: [{"featureType":"administrative","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"simplified"}]},{"featureType":"water","stylers":[{"visibility":"simplified"}]},{"featureType":"transit","stylers":[{"visibility":"simplified"}]},{"featureType":"landscape","stylers":[{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"visibility":"off"}]},{"featureType":"road.local","stylers":[{"visibility":"on"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"water","stylers":[{"color":"#84afa3"},{"lightness":52}]},{"stylers":[{"saturation":-17},{"gamma":0.36}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"color":"#3f518c"}]}],
                         }
 
-              var map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
-              var marker = new google.maps.Marker({
-                position: service_marker,
-                map: map
+        const map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
+        var infoWindow = new google.maps.InfoWindow();
+
+        service_data.forEach(function(service){
+            const position = new google.maps.LatLng(service["latitude"], service["longitude"]);
+
+            if (index === 1) {
+              var marker = new google.maps.Marker({ 
+                position,
+                map,
+                title: "Your Input Address",
+                icon: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
               });
+              var content = "<div style = 'width:300px;min-height:10px'>" + "Your disclosed address/location" + "</div>"; 
+            }
+            else {
+              var marker = new google.maps.Marker({ 
+                position,
+                map,
+                title: service["name"]
+              });
+              var content = "<div style = 'width:300px;min-height:10px'>" + "Name: " + service.name + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Address: " + service.address + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Service Type: " + service.type + "</div>";
+            }
+
+            map.fitBounds(bounds.extend(position));
+
+            index = index += 1;
+            (function (marker, service) {
+                   google.maps.event.addListener(marker, "click", function (e) {
+                       infoWindow.setContent(content);
+                       infoWindow.open(map, marker);
+                   });
+               })(marker, service);
+
             });
+
+        });
 
     },
 
@@ -291,7 +363,7 @@ var UserServicesShowPage = {
         axios
           .patch("/user_services/" + this.$route.params.id, params)
           .then(function(response) {
-            router.push("/user_services/" + response.data.id);
+            router.push("/user_services/" + this.$route.params.id);
           }.bind(this))
           .catch(
             function(error) {
@@ -404,24 +476,6 @@ var app = new Vue({
 
 });
 
-// var gMap = new Vue({
-//   el: "#google-map",
-//   props: ['name'],
-//   data: function () {
-//     return {
-//       mapName: this.name + "-map",
-//     }
-//   },
-//   mounted: function () {
-//     const element = document.getElementById(this.mapName)
-//     const options = {
-//       zoom: 14,
-//       center: new google.maps.LatLng(51.501527,-0.1921837)
-//     }
-//     const map = new google.maps.Map(element, options);
-//   }
-
-// });
 
 
 

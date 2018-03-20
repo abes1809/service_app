@@ -22,3 +22,7 @@ json.prefered_contact @user_service[0]['prefered_contact_method']
 json.status @user_service[0]["status"]
 json.distance @user_service[0]["distance"]
 
+json.user_full_address @user_service[2].full_address
+json.user_latitude @user_service[2].latitude
+json.user_longitude @user_service[2].longitude
+

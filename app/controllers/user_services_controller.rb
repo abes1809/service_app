@@ -4,7 +4,7 @@ class UserServicesController < ApplicationController
 
     services = current_user.user_services
 
-    @user_services = services.index_matches(services)
+    @user_services = services.index_matches(services, current_user)
     
     if render 'index.json.jbuilder'
 
@@ -18,7 +18,7 @@ class UserServicesController < ApplicationController
 
     @user_service = UserService.find(params[:id])
 
-    @user_service = @user_service.show_match(@user_service)
+    @user_service = @user_service.show_match(@user_service, current_user)
 
     render 'show.json.jbuilder'
 
@@ -28,15 +28,11 @@ class UserServicesController < ApplicationController
 
     @user_service = UserService.find(params[:id])
 
-    puts params[:status]
-
     @user_service.status = params[:status] || @user_service.status 
     @user_service.notes = params[:notes] || @user_service.notes
     
     if @user_service.save
-      @user_service = @user_service.show_match(@user_service)  
-      puts @user_service.as_json
-      render 'show.json.jbuilder'
+
     else   
       render json: {errors: @user_service.errors.full_messages}, status: :unprocessable_entity
     end 

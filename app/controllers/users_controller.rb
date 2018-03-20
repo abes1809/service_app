@@ -9,7 +9,9 @@ class UsersController < ApplicationController
                                      city: params[:city],
                                      zip: params[:zip],
                                      prefered_contact_method: params[:prefered_contact_method],
+                                     full_address: params[:address] + ", " + params[:city] + ", " + params[:state]
                                    )
+
      if @contact_info.save
      else 
        render json: {errors: @contact_info.errors.full_messages}, status: :unprocessable_entity

@@ -3,13 +3,13 @@ class UserService < ApplicationRecord
   belongs_to :servicable, polymorphic: true 
   enum status: {not_contacted: 1, contacted: 2, intake_complete: 3}
 
-  def show_match(user_service)
+  def show_match(user_service, user)
 
     service_info = eval("#{user_service.servicable_type}.find(#{user_service.servicable_id})")
 
     # service_info = [service_info]
 
-    service_info = [user_service] + [service_info]
+    service_info = [user_service] + [service_info] + [user.contact_info]
 
     service_info
 
@@ -19,42 +19,22 @@ class UserService < ApplicationRecord
 
     service_info = eval("#{user_service.servicable_type}.find(#{user_service.servicable_id})")
 
-    service_latlog = Geocoder.coordinates("#{service_info.contact_info.address}, #{service_info.contact_info.city}, #{service_info.contact_info.state}")
+    sleep(2)
 
-    user_latlog = Geocoder.coordinates("#{user.contact_info.address}, #{user.contact_info.city}, #{user.contact_info.state}")
-
-    user_lat = user_latlog[0]
-    user_log = user_latlog[1]
-
-    service_lat = service_latlog[0]
-    service_log = service_latlog[1]
-
-    puts "____MODEL WORKING______"
-
-    sleep(5)
-
-    response = Unirest.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=#{user_lat},#{user_log}&destinations=#{service_lat}%2C#{service_log}&key=#{ENV['GOOGLE_API_KEY']}").body
+    response = Unirest.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=#{user.contact_info.latitude},#{user.contact_info.longitude}&destinations=#{service_info.contact_info.latitude}%2C#{service_info.contact_info.longitude}&key=#{ENV['GOOGLE_API_KEY']}").body
 
     if response == "Google API error: over query limit."
       sleep(10)
       response = Unirest.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=#{user_lat},#{user_log}&destinations=#{service_lat}%2C#{service_log}&key=#{ENV['GOOGLE_API_KEY']}").body
     end 
-
-    if response == "Google API error: over query limit."
-      sleep(10)
-      response = Unirest.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=#{user_lat},#{user_log}&destinations=#{service_lat}%2C#{service_log}&key=#{ENV['GOOGLE_API_KEY']}").body
-    end 
-
 
     distance_apart = response["rows"][0]["elements"][0]["distance"]["text"]
-
-    puts distance_apart
 
     distance_apart
 
   end 
 
-  def self.index_matches(user_services)
+  def self.index_matches(user_services, user)
     services = []
 
     user_services.each do |user_service|
@@ -65,7 +45,7 @@ class UserService < ApplicationRecord
 
       user_info = [user_service]
 
-      service_info = user_info + service_info
+      service_info = user_info + service_info + [user.contact_info]
     
       services << service_info
     end
