@@ -41,13 +41,17 @@ var SurveyPage = {
   methods: {
     submit: function () {
 
-      var lawService = this.lawService;
-      var shelter = this.shelter;
-      var mentalHealthService = this.mentalHealthService;
+      // var service_params = {
+      //                       lawService: this.lawService,
+      //                       shelter: this.shelter,
+      //                       mentalHealthService: this.mentalHealthService
+      //                       }
 
 
       var params = {
-        // service_type: serviceType,
+        law: this.lawService || false, 
+        mental: this.mentalHealthService || false, 
+        shelter: this.shelter || false,
         name: this.name,
         password: this.password,
         password_confirmation: this.passwordConfirmation,
@@ -96,52 +100,9 @@ var SurveyPage = {
                 this.password = "";
               }.bind(this)
             )})
-            .then(function(){
-              setTimeout(function() {
-                if (lawService === true) {
-                  axios.post("/users_law_service")
-                    .then(function(response) {})
-                    .catch(
-                          function(error) {
-                            this.errors = error.response.data.errors;
-                          }.bind(this)
-                      );
-                  }
-                }, 10000); 
-
-                setTimeout(function() {
-                if (mentalHealthService === true) {
-                  axios.post("/users_mental_health")
-                    .then(function(response) {
-                    })
-                    .catch(
-                          function(error) {
-                            this.errors = error.response.data.errors;
-                          }.bind(this)
-                      );
-                  }
-                }, 45000); 
-                setTimeout(function() {
-                if (shelter === true) {
-                  axios.post("/users_shelter")
-                    .then(function(response) {
-                      console.log("SHIBBAA")
-                    })
-                    .catch(
-                          function(error) {
-                            this.errors = error.response.data.errors;
-                          }.bind(this)
-                      );
-                  }
-                }, 90000); 
-
-            });
-
-        setTimeout(function() {
-          router.push("/user_services");
-        }, 95000);      
+            
     },
-  }
+  },
 };
 
 var MatchPage = {
@@ -156,11 +117,12 @@ var MatchPage = {
   created: function() {},
   methods: {
     submit: function () {
-      var params = {law_service: this.lawService, 
-                    mental_health_service: this.mentalHealthService, 
-                    shelter: this.shelter};
+      var categories = {law: this.lawService || false, mental: this.mentalHealthService || false, shelter: this.shelter || false};
+
+      console.log(categories);
+
       axios 
-        .post("/user_services", params)
+        .post("/user_services", categories)
         .then(function(response) {
           router.push("/user_services");
         })
@@ -202,12 +164,23 @@ var UserServicesIndexPage = {
     return {
       user_services: [],
       errors: [],
+      coordinates: this.coordinates, 
+      mapName: this.name + "-map",
+      map: null,
+      bounds: null,
+      markers: [],
     };
   },
   created: function() {
     axios.get("/user_services")
       .then(function(response) {
         this.user_services = response.data;
+        var coordinates = [];
+        response.data.forEach(function(service) { 
+          var coordinate = {latitude: service.latitude, longitude: service.longitude}
+          coordinates.push(coordinate)
+        });
+        this.coordinates = coordinates;
       }.bind(this))
       .catch(
         function(error) {
@@ -215,7 +188,46 @@ var UserServicesIndexPage = {
           router.push("/login");
         }.bind(this)
       );
-    }
+    },
+
+    updated: function () {
+        this.$nextTick(function () {
+
+        this.bounds = new google.maps.LatLngBounds();
+
+        const mapCentre = ({lat: this.coordinates[0]["latitude"], long: this.coordinates[0]["longitude"]})
+
+        const mapOptions = {
+                          zoom: 15,
+                          center: new google.maps.LatLng(mapCentre['lat'], mapCentre["long"]),
+                          styles: [{"featureType":"administrative","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"simplified"}]},{"featureType":"water","stylers":[{"visibility":"simplified"}]},{"featureType":"transit","stylers":[{"visibility":"simplified"}]},{"featureType":"landscape","stylers":[{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"visibility":"off"}]},{"featureType":"road.local","stylers":[{"visibility":"on"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"water","stylers":[{"color":"#84afa3"},{"lightness":52}]},{"stylers":[{"saturation":-17},{"gamma":0.36}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"color":"#3f518c"}]}],
+                        }
+
+        this.map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
+
+
+        // const markers = []
+
+        this.coordinates.forEach(function(coord){
+            const position = new google.maps.LatLng(coord["latitude"], coord["longitude"]);
+            const marker = new google.maps.Marker({ 
+              position,
+              map: this.map
+            });
+            console.log({lat: coord["latitude"], long: coord["longitude"]});
+            console.log(marker);
+            this.markers.push(marker)
+              this.map.fitBounds(this.bounds.extend(position))
+          });
+              // var map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
+              // var marker = new google.maps.Marker({
+              //   position: service_marker,
+              //   map: map
+              // });
+
+      });
+
+    },
 };
 
 
@@ -227,7 +239,8 @@ var UserServicesShowPage = {
   data: function() {
     return {
       user_service: [],
-      full_address: this.full_address,
+      lat: this.latitude,
+      log: this.longitude,
 
       notes: "",
       status: "",
@@ -239,8 +252,10 @@ var UserServicesShowPage = {
 
   created: function() {
     axios.get("/user_services/" + this.$route.params.id).then(function(response) {
-        this.user_service = response.data;
-        this.full_address = response.data.address + ", " + response.data.city + ", " + response.data.state;
+        this.user_service = response.data
+        this.latitude = response.data.latitude
+        this.longitude = response.data.longitude
+        this.status = response.data.status;
       }.bind(this));
   },  
 
@@ -249,42 +264,30 @@ var UserServicesShowPage = {
 
       console.log("UGH")
 
-        geocoder = new google.maps.Geocoder();
-
-        var latlng = new google.maps.LatLng(39.881832, -84.623177);
+        var service_marker = {lat: this.latitude, lng: this.longitude}
 
         var mapOptions = {
-                          zoom: 13,
-                          center: latlng,
+                          zoom: 15,
+                          center: service_marker,
                           styles: [{"featureType":"administrative","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"simplified"}]},{"featureType":"water","stylers":[{"visibility":"simplified"}]},{"featureType":"transit","stylers":[{"visibility":"simplified"}]},{"featureType":"landscape","stylers":[{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"visibility":"off"}]},{"featureType":"road.local","stylers":[{"visibility":"on"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"water","stylers":[{"color":"#84afa3"},{"lightness":52}]},{"stylers":[{"saturation":-17},{"gamma":0.36}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"color":"#3f518c"}]}],
                         }
 
-        map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
-
-        var geoAddress = this.full_address
-
-        geocoder.geocode( { 'address' : geoAddress}, function(results, status) {
-              if (status == 'OK') {
-
-                map.setCenter(results[0].geometry.location);
-                var marker = new google.maps.Marker({
-                    map: map,
-                    position: results[0].geometry.location
-                });
-              } else {
-                alert('Geocode was not successful for the following reason: ' + status);
-              }
+              var map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
+              var marker = new google.maps.Marker({
+                position: service_marker,
+                map: map
+              });
             });
-      });
+
     },
 
   methods: {
-    
 
   updateNotes: function() {
         var params = {
           notes: this.notes,
         };
+
         axios
           .patch("/user_services/" + this.$route.params.id, params)
           .then(function(response) {
@@ -298,6 +301,7 @@ var UserServicesShowPage = {
       },
 
   updateStatus: function(new_status) {
+        this.status = new_status;
         axios
           .patch("/user_services/" + this.$route.params.id, {status: new_status})
           .then(function(response) {
@@ -308,6 +312,8 @@ var UserServicesShowPage = {
               this.errors = error.response.data.errors;
             }.bind(this)
           );
+          
+
       },
 
   toggleNoteBox: function () {
@@ -373,14 +379,6 @@ var router = new VueRouter({
 
           { path: "/user_services/:id", component: UserServicesShowPage },
           { path: "/services/", component: ServicesIndexPage },
-          
-          // { path: "/services?=law", component: LawServicesIndexPage },
-          // { path: "/services?=mental", component: MentalHealthServicesIndexPage },
-          // { path: "/services?=shelter", component: SheltersIndexPage },
-
-          // { path: "/services/new", component: ServicesNewPage },
-          // { path: "/services/8/edit", component: ServicesEditPage },
-          // { path: "/services/:id/delete", component: ServicesDestoryPage },
 
           { path: "/user_services", component:UserServicesIndexPage },
 

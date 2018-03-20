@@ -22,6 +22,7 @@ gem 'knock'
 gem 'unirest'
 gem 'figaro'
 gem 'geocoder'
+gem 'geokit'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
