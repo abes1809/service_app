@@ -10,6 +10,18 @@ class User < ApplicationRecord
   enum gender: {female: 1, male: 2, trans: 3}, _prefix: :gender
   enum sex: {female: 1, male: 2, intersex: 3}, _prefix: :sex
 
+  def find_address(contact_info)
+
+    if contact_info.address 
+      full_address = contact_info.address + ", " + contact_info.city + ", " + contact_info.state
+    else
+      full_address = contact_info.zip 
+    end
+
+    full_address   
+
+  end 
+
   def find_distance(user_service, user)
 
     service_info = eval("#{user_service.servicable_type}.find(#{user_service.servicable_id})")

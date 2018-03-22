@@ -30,6 +30,8 @@ class UserService < ApplicationRecord
 
     distance_apart = response["rows"][0]["elements"][0]["distance"]["text"]
 
+    distance_apart = distance_apart.chomp(" mi")
+
     distance_apart
 
   end 

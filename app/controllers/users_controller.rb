@@ -9,8 +9,21 @@ class UsersController < ApplicationController
                                      city: params[:city],
                                      zip: params[:zip],
                                      prefered_contact_method: params[:prefered_contact_method],
-                                     full_address: params[:address] + ", " + params[:city] + ", " + params[:state]
+                                     # full_address: params[:address] + ", " + params[:city] + ", " + params[:state]
                                    )
+
+     # address = @contact_info.find_address(@contact_info)
+
+     if @contact_info.address == ""
+       full_address = @contact_info.zip 
+     else
+       full_address = @contact_info.address + ", " + @contact_info.city + ", " + @contact_info.state
+     end
+
+     @contact_info.full_address = full_address 
+
+     puts "TESTING________________"
+     puts @contact_info.as_json
 
      if @contact_info.save
      else 

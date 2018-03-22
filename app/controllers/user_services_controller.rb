@@ -2,6 +2,8 @@ class UserServicesController < ApplicationController
 
   def index
 
+    puts current_user
+
     services = current_user.user_services
 
     @user_services = services.index_matches(services, current_user)

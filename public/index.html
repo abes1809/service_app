@@ -578,14 +578,43 @@
           
           <!-- Sections Menu-->
           <div class="nav-section-menu">
-            <h4 class="text-left font-weight-bold my-0" >Your Service Matches Below! </h4>
+            <h4 class="text-left font-weight-bold my-0" >Your Service Matches! </h4> <br> 
+
+           <p if="filter" class="font-weight-bold">Show me services within</p>
+              <select id="filter" v-model="optionMiles" v-on:change="">
+                <option value="30"><h5>30 miles</h5></option>
+                <option  value="20"><h5>20 miles</h5></option>
+                <option  value="10"><h5>10 miles</h5></option>
+                <option  value="8"><h5>8 miles</h5></option>
+                <option  value="6"><h5>6 miles</h5></option>
+                <option  value="4"><h5>4 miles</h5></option>
+                <option  value="2"><h5>2 miles</h5></option>
+                <option  value="1"><h5>1 mile</h5></option>
+              </select>
+
+            <p if="filter" class="font-weight-bold">Filter Service Types</p>
+              <select id="filter" v-model="filterType" v-on:change="">
+                <option value="all"><h5>Show all</h5></option>
+                <option value="LawService"><h5>Law Service</h5></option>
+                <option  value="MentalHealthService"><h5>Mental Health Services</h5></option>
+                <option  value="Shelter"><h5>Shelter</h5></option>
+              </select>
+
+            
+
+
+            <!-- <buttonv v-on:click=""></button> -->
             <div class="nav nav-list">
               <span class="nav-header ">Services</span> 
-              <a v-for="user_service in user_services" v-bind:href="'/#/user_services/' + user_service.id" class="nav-link first active">
-                {{ user_service.name }}
-                <small> {{ user_service.servicable_type }} </small>
-                <small> {{ user_service.distance}} miles away </small>
-                <i class="fa fa-angle-right"></i>
+              <a v-for="user_service in sortedServiceDistances" v-bind:href="'/#/user_services/' + user_service.id" class="nav-link first active">
+                <div v-if="filterDistance(user_service)">
+                  <div v-if="filterServiceType(user_service)">
+                    {{ user_service.name }}
+                    <small> {{ user_service.servicable_type }} </small>
+                    <small> {{ user_service.distance}} miles away </small>
+                    <i class="fa fa-angle-right"></i>
+                  </div>
+                </div>
               </a>
             </div>
           </div>
@@ -593,7 +622,7 @@
           <div class="col-md-9">
             <h2 class="title-divider">
               <span>Your <span class="font-weight-normal text-muted">Homepage</span></span>
-              <small>See below for more details!</small>
+              <small>You matched with {{ user_services.length }} services!</small>
             </h2>
             
             <!-- About company -->
@@ -612,7 +641,13 @@
 
             <h4>Your Service Map</h4>
 
-            <div class="google-map" v-bind:id="mapName"></div> <br> <br> <br>
+            <div class="google-map" v-bind:id="mapName"></div>
+            <small>Yellow = Your Location ||</small>
+            <small>Orange = Shelters ||</small>
+            <small>Purple = Law Services ||</small>
+            <small>Red = Mental Health Services</small>
+
+            <br> <br> <br>
 
             
             <div class="title-divider mt-4" id="stats">
@@ -631,7 +666,7 @@
                 <small>GB Transfered</small>
               </div>
               <div class="col-md-3 stat">
-                <div class="stat-header">2143</div>
+                <div class="stat-header">(630)-337-5485</div>
                 <small>Bugs Fixed</small>
               </div>
               <div class="col-md-3 stat">
@@ -674,8 +709,6 @@
            </h1>
            <div class="row">
              <div class="col-md-5">
-
-              <!-- <div id="services-show-page"></div> -->
 
                 <h4 id="services-show-page"> Description: {{ user_service.speciality }} </h4><br><br>
 
@@ -737,7 +770,9 @@
                  {{user_service.full_address}}
                </p> <br> 
 
-               <div class="google-map" v-bind:id="mapName"></div> <br> <br> <br>
+               <div class="google-map" v-bind:id="mapName"></div> 
+                <small>Red = The Service || Yellow = You</small>
+               <br> <br> <br>
 
              </div>
 

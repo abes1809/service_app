@@ -23,6 +23,7 @@ gem 'unirest'
 gem 'figaro'
 gem 'geocoder'
 gem 'geokit'
+gem 'twilio-ruby'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

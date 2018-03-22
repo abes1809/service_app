@@ -157,6 +157,9 @@ var UserServicesIndexPage = {
     return {
       user_services: [],
       errors: [],
+      sortAscending: true,
+      optionMiles: 30,
+      filterType: "all",
 
       mapName: this.name + "-map",
     };
@@ -196,7 +199,8 @@ var UserServicesIndexPage = {
         var userData = {
                         latitude: this.user_services[0].user_latitude,
                         longitude: this.user_services[0].user_longitude,
-                        address: this.user_services[0].user_full_address
+                        address: this.user_services[0].user_full_address,
+                        type: "user"
 
         };
 
@@ -220,7 +224,7 @@ var UserServicesIndexPage = {
         service_data.forEach(function(service){
             const position = new google.maps.LatLng(service["latitude"], service["longitude"]);
 
-            if (index === 10) {
+            if (service.type == "user") {
               var marker = new google.maps.Marker({ 
                 position,
                 map,
@@ -229,11 +233,33 @@ var UserServicesIndexPage = {
               });
               var content = "<div style = 'width:300px;min-height:10px'>" + "Your disclosed address/location" + "</div>"; 
             }
-            else {
+
+            else if (service.type == "LawService") {
               var marker = new google.maps.Marker({ 
                 position,
                 map,
-                title: service["name"]
+                title: service["name"],
+                icon: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png"
+              });
+              var content = "<div style = 'width:300px;min-height:10px'>" + "Name: " +service.name + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Address: " + service.address + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Service Type: " + service.type + "</div>";
+            }
+
+            else if (service.type == "MentalHealthService") {
+              var marker = new google.maps.Marker({ 
+                position,
+                map,
+                title: service["name"],
+                icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+              });
+              var content = "<div style = 'width:300px;min-height:10px'>" + "Name: " +service.name + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Address: " + service.address + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Service Type: " + service.type + "</div>";
+            }
+
+            else if (service.type == "Shelter") {
+              var marker = new google.maps.Marker({ 
+                position,
+                map,
+                title: service["name"],
+                icon: "http://maps.google.com/mapfiles/ms/icons/orange-dot.png"
               });
               var content = "<div style = 'width:300px;min-height:10px'>" + "Name: " +service.name + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Address: " + service.address + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Service Type: " + service.type + "</div>";
             }
@@ -252,6 +278,44 @@ var UserServicesIndexPage = {
 
       });
 
+    },
+
+    methods: {
+      filterDistance:function(user_service) {
+        
+        if (parseFloat(user_service.distance) < this.optionMiles) {
+          return true;
+        }
+          return false;
+      },
+
+      filterServiceType:function(user_service) {
+        if (this.filterType == "all") {
+          return true 
+        }
+        else { 
+          if (user_service.servicable_type == this.filterType) {
+            return true;
+          }
+            return false;
+        }
+
+      },
+
+    },
+    computed: {
+
+      sortedServiceDistances: function() {
+
+        return this.user_services.sort(function(service1, service2) {
+          if (this.sortAscending) {
+            return service1.distance - service2.distance;
+          }
+          else {
+            return service2.distance - service1.distance;
+          }
+        }.bind(this));
+      }
     },
 };
 
