@@ -47,12 +47,13 @@ class UsersController < ApplicationController
                     gender: params[:gender],
                     sex: params[:sex],
                     homeless_date: params[:homeless_date],
-                    domestic_violence_survivor: params[:domestic_violence_victim],
+                    domestic_violence_survivor: params[:domestic_violence_survivor],
                     annual_income: params[:annual_income],
                     household_size: params[:household_size],
                     age: params[:age],
                     photo_id: params[:photo_id],
-                    insurance: params[:insurance]
+                    insurance: params[:insurance],
+                    children: params[:children]
                   )
 
     if @user.save
@@ -87,11 +88,11 @@ class UsersController < ApplicationController
 
     puts "_______________DOING STUFF 4____________________"
 
-    puts services 
+    p services 
     puts "WORKING"
 
     services.each do |service|
-      if service.qualified_user?(@user) 
+      if service.qualified_user?(@user, service) 
 
         puts "FOUND QUALIFIED"
 
@@ -103,9 +104,8 @@ class UsersController < ApplicationController
                                         notes: "",
                                         )
 
-       puts "_______________DOING STUFF 5____________________"
-
         distance = @user_service.find_distance(@user_service, @user)
+
         puts "------------DISTANCE---------------"
         puts distance
 
@@ -132,7 +132,11 @@ class UsersController < ApplicationController
     @user.annual_income = params["annual_income"] || @user.annual_income
     @user.household_size = params["household_size"] || @user.household_size
     @user.age = params["age"] || @user.age
+    @user.photo_id = params["photo_id"] || @user.photo_id
+    @user.insurance = params["insurance"] || @user.insurance
+    @user.children = params["children"] || @user.children?
     @user.password = params["password"]
+
 
     @contact_info = ContactInfo.find(@user.contact_info_id)
 
@@ -200,7 +204,7 @@ class UsersController < ApplicationController
       puts "WORKING"
 
       services.each do |service|
-        if service.qualified_user?(@user) 
+        if service.qualified_user?(@user, service) 
 
           puts "FOUND QUALIFIED"
 
@@ -248,26 +252,34 @@ class UsersController < ApplicationController
     phone_number = params[:phone_number]
     website = params[:website]
     zip = params[:zip]
+    address_url = address.gsub(/\s+/, "+")
 
+    puts address_url
     # put your own credentials here
     account_sid = ENV['TWILLIO_ACCOUNT_SID']
     auth_token = ENV['TWILLIO_TOKEN']
 
-    message = "Hello! Below is your requested service information! Address: #{address}. Phone Number: #{phone_number}, website: #{website}"
+    message = "
 
-    media = 'https://www.google.com/maps/place/#{address}+#{zip}/'
+    Hello! Below is your requested service information!
+
+    - Address: #{address}, 
+
+    - Phone Number: #{phone_number},
+
+    - Website: #{website},
+    
+    - Google Maps Link: https://www.google.com/maps/place/'#{address_url}'
+    "
 
     puts message
-    puts media
 
-    # set up a client to talk to the Twilio REST API
     @client = Twilio::REST::Client.new(account_sid, auth_token)
 
     message = @client.messages.create(
       body: message,
       to: '+16303375485',
-      from: ENV['TWILLIO_NUMBER'],
-      # media_url: 
+      from: ENV['TWILLIO_NUMBER']
     )
 
     puts message

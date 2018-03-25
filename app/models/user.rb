@@ -23,8 +23,6 @@ class User < ApplicationRecord
 
   def find_distance(user_service, user)
 
-    puts "HERERERE"
-
     service_info = eval("#{user_service.servicable_type}.find(#{user_service.servicable_id})")
 
     puts user.contact_info.latitude
@@ -38,19 +36,11 @@ class User < ApplicationRecord
 
     response = Unirest.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=#{user.contact_info.latitude},#{user.contact_info.longitude}&destinations=#{service_info.contact_info.latitude}%2C#{service_info.contact_info.longitude}&key=#{ENV['GOOGLE_API_KEY']}").body
 
-    puts "HERERERE"
-
-    # puts response
-
     distance_apart = response["rows"][0]["elements"][0]["distance"]["text"]
 
     distance_apart = distance_apart.chomp(" mi")
 
     distance_apart
-
-  end 
-
-  def send_sms
 
   end 
 

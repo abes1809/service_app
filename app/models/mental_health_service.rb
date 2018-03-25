@@ -3,7 +3,7 @@ class MentalHealthService < ApplicationRecord
   has_many :qualifiers, as: :servicable
   has_many :user_services, as: :servicable
 
-  def qualified_user?(user)
+  def qualified_user?(user, service)
     qualified = true
 
     qualifiers.each do |qualifier|

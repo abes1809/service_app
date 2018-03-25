@@ -69,16 +69,10 @@ class UserServicesController < ApplicationController
         services = MentalHealthService.all
       end
 
-      puts services 
-      puts "WORKING"
-
       matches = 0 
 
-      puts "----------User-----------"
-      puts current_user.contact_info.as_json
-
       services.each do |service|
-        if service.qualified_user?(current_user) 
+        if service.qualified_user?(current_user, service) 
 
           @user_service = UserService.new(
                                           servicable_id: service.id,
@@ -88,16 +82,11 @@ class UserServicesController < ApplicationController
                                           notes: "",
                                           )
 
-          puts "____________________________"
-          puts @user_service.as_json
-
           distance = @user_service.find_distance(@user_service, current_user)
           puts "------------DISTANCE---------------"
           puts distance
 
           @user_service[:distance] = distance
-
-          puts @user_service.as_json 
 
           matches = matches += 1
           @user_service.save

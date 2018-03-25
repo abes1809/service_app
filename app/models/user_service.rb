@@ -15,32 +15,14 @@ class UserService < ApplicationRecord
 
   def find_distance(user_service, user)
 
-    puts "WORKING"
 
     service_info = eval("#{user_service.servicable_type}.find(#{user_service.servicable_id})")
 
-    puts user.as_json
-    puts "User"
-    puts user.contact_info.latitude
-    puts user.contact_info.longitude
-    puts "SERVICE"
-    puts service_info.contact_info.longitude
-    puts service_info.contact_info.latitude
-
-    puts "Coordinates above"
-
     sleep(2)
-    puts "WORKING"
 
     response = Unirest.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=#{user.contact_info.latitude},#{user.contact_info.longitude}&destinations=#{service_info.contact_info.latitude}%2C#{service_info.contact_info.longitude}&key=#{ENV['GOOGLE_API_KEY']}").body
 
-    # if response == "Google API error: over query limit."
-    #   sleep(10)
-    #   response = Unirest.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=#{user_lat},#{user_log}&destinations=#{service_lat}%2C#{service_log}&key=#{ENV['GOOGLE_API_KEY']}").body
-    # end 
-    puts "WORKING"
-
-    puts response
+    puts "DISTANCE WORKING"
 
     distance_apart = response["rows"][0]["elements"][0]["distance"]["text"]
 
@@ -70,39 +52,6 @@ class UserService < ApplicationRecord
 
     services
   end
-
-
-  # def self.service_categories(categories)
-
-  #     # values = [law_services, mental_health_services, shelters]
-
-  #     if categories == {shelter:true, law:true, mental:true }
-  #       services = Shelter.all + LawService.all + MentalHealthService.all 
-
-  #     elsif categories == {shelter:true, law:true, mental:"" }
-  #       services = Shelter.all + LawService.all 
-
-  #     elsif categories == {shelter:true, law:"", mental:true } 
-  #       services = Shelter.all + MentalHealthService.all
-
-  #     elsif categories == {shelter:"", law:true, mental:true }
-  #       services = LawService.all + MentalHealthService.all
-
-  #     elsif categories == {shelter:true, law:"", mental:"" }
-  #       services = Shelter.all
-
-  #     elsif categories == {shelter:"", law:true, mental:"" } 
-  #       services = LawService.all 
-      
-  #     elsif categories == {shelter:"", law:"", mental:true }
-  #       services = MentalHealthService.all
-  #     end
-
-  #   services
-
-  # end 
-
-
 
 end 
 

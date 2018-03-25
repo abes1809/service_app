@@ -35,7 +35,8 @@ var SurveyPage = {
       zip: "",
       photoId: "",
       insurance: "",
-      errors: [],
+      children: "",
+      errors: []
     };
   },
   methods: {
@@ -62,7 +63,8 @@ var SurveyPage = {
         state: this.state,
         zip: this.zip,
         photo_id: this.photoId,
-        insurance: this.insurance
+        insurance: this.insurance,
+        children: this.children
       };
 
       console.log(params);
@@ -99,35 +101,35 @@ var SurveyPage = {
   },
 };
 
-var MatchPage = {
-  template: "#match-page",
-  data: function() {
-    return {
-      lawService: "",
-      mentalHealthService: "",
-      shelter: "",
-    };
-  },
-  created: function() {},
-  methods: {
-    submit: function () {
-      var categories = {law: this.lawService || false, mental: this.mentalHealthService || false, shelter: this.shelter || false};
+// var MatchPage = {
+//   template: "#match-page",
+//   data: function() {
+//     return {
+//       lawService: "",
+//       mentalHealthService: "",
+//       shelter: "",
+//     };
+//   },
+//   created: function() {},
+//   methods: {
+//     submit: function () {
+//       var categories = {law: this.lawService || false, mental: this.mentalHealthService || false, shelter: this.shelter || false};
 
-      console.log(categories);
+//       console.log(categories);
 
-      axios 
-        .post("/user_services", categories)
-        .then(function(response) {
-          router.push("/user_services");
-        })
-        .catch(
-          function(error) {
-            this.errors = error.response.data.errors;
-          }.bind(this)
-        );
-    }
-  }
-};
+//       axios 
+//         .post("/user_services", categories)
+//         .then(function(response) {
+//           router.push("/user_services");
+//         })
+//         .catch(
+//           function(error) {
+//             this.errors = error.response.data.errors;
+//           }.bind(this)
+//         );
+//     }
+//   }
+// };
 
 var ServicesIndexPage = {
   template: "#services-index-page",
@@ -137,6 +139,7 @@ var ServicesIndexPage = {
       mental_health_services: [],
       shelters: [],
       user_services:[],
+      filterType: "all"
     };
   },
   created: function() {
@@ -174,9 +177,20 @@ var ServicesIndexPage = {
         return false;
       }
     },
+    filterServiceType:function(service) {
+      if (this.filterType == "all") {
+        return true 
+      }
+      else { 
+        if (service.type == this.filterType) {
+          return true;
+        }
+          return false;
+      }
+
+    },
   },
   computed: {}
-
 };
 
 var LawServicesShowPage = {
@@ -569,6 +583,8 @@ var UserServicesShowPage = {
 
       notes: "",
       status: "",
+      travelMode: "",
+      directions: "Set Directions",
 
       mapName: this.name + "-map",
     };
@@ -583,8 +599,6 @@ var UserServicesShowPage = {
 
   updated: function () {
       this.$nextTick(function () {
-
-      console.log("UGH")
 
         var service_data = [{
                     latitude: this.user_service.latitude,
@@ -607,6 +621,10 @@ var UserServicesShowPage = {
 
         const bounds = new google.maps.LatLngBounds();
 
+
+        var directionsService = new google.maps.DirectionsService();
+        var directionsDisplay = new google.maps.DirectionsRenderer();
+
         const mapOptions = {
                           zoom: 20,
                           center: new google.maps.LatLng(service_data[0]["latitude"], service_data[0]
@@ -614,7 +632,9 @@ var UserServicesShowPage = {
                           styles: [{"featureType":"administrative","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"simplified"}]},{"featureType":"water","stylers":[{"visibility":"simplified"}]},{"featureType":"transit","stylers":[{"visibility":"simplified"}]},{"featureType":"landscape","stylers":[{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"visibility":"off"}]},{"featureType":"road.local","stylers":[{"visibility":"on"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"water","stylers":[{"color":"#84afa3"},{"lightness":52}]},{"stylers":[{"saturation":-17},{"gamma":0.36}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"color":"#3f518c"}]}],
                         }
 
-        const map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
+
+
+        const map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);directionsDisplay.setMap(map);
         var infoWindow = new google.maps.InfoWindow();
 
         service_data.forEach(function(service){
@@ -651,12 +671,33 @@ var UserServicesShowPage = {
 
             });
 
-        });
+            var service = new google.maps.LatLng(this.user_service.latitude, this.user_service.longitude);
+            var user = new google.maps.LatLng(this.user_service.user_latitude, this.user_service.user_longitude);
 
+            var selectedMode = document.getElementById('mode').value;
+
+            directionsDisplay.setMap(map);
+            directionsDisplay.setOptions( { suppressMarkers: true } );
+            document.getElementById("panel").innerHTML = "";
+            directionsDisplay.setPanel(document.getElementById('panel'));
+
+            var request = {
+                origin: user,
+                destination: service,
+                travelMode: google.maps.TravelMode[this.travelMode]
+            };
+
+            directionsService.route(request, function(response, status) {
+              if (status == 'OK') {
+                directionsDisplay.setDirections(response);
+              }
+
+            });    
+
+        });
     },
 
   methods: {
-
   updateNotes: function() {
         var params = {
           notes: this.notes,
@@ -686,8 +727,6 @@ var UserServicesShowPage = {
               this.errors = error.response.data.errors;
             }.bind(this)
           );
-          
-
       },
 
   toggleNoteBox: function () {
@@ -718,10 +757,8 @@ var UserServicesShowPage = {
               this.errors = error.response.data.errors;
             }.bind(this)
           );
-      },  
-      
+      },
   },
-  computed: {}
 };
 
 var UserUpdatePage = {
@@ -747,6 +784,9 @@ var UserUpdatePage = {
       state: null,
       zip: null,
       password: null,
+      photoId: null,
+      insurance: null,
+      children: null,
       rematch: "no",
       errors: [],
     };
@@ -761,11 +801,6 @@ var UserUpdatePage = {
       }.bind(this));
   },
   methods: {
-    toggleInputBox: function (inputBoxNumber) {
-      console.log(inputBoxNumber);
-          var element = document.getElementById(inputBoxNumber);
-          element.classList.toggle("hidden");
-      },
     submit: function() {
       var params = {
         law: this.lawService || false, 
@@ -785,6 +820,9 @@ var UserUpdatePage = {
         city: this.city,
         state: this.state,
         zip: this.zip,
+        photo_id: this.photoId,
+        insurance: this.insurance,
+        children: this.children,
         rematch: this.rematch
       };
 
@@ -808,41 +846,6 @@ var UserUpdatePage = {
     }
   }
 };
-
-
-// var ProvidersCreatePage = {
-//   template: "#providers-create-page",
-//   data: function() {
-//     return {
-//       lawService: "",
-//       mentalHealthService: "",
-//       shelter: "",
-//       name: "",
-//       message: "welcome",
-//     };
-//   },
-//   created: function() {},
-//   methods: {
-//     submit: function() {
-//       var params = {
-//         law: this.lawService || false, 
-//         mental: this.mentalHealthService || false, 
-//         shelter: this.shelter || false,
-//         name: this.name,
-//       };
-
-//       axios 
-//         .post("/users", params)
-//         .then(function(response) {})
-//         .catch(
-//           function(error) {
-//             this.errors = error.response.data.errors;
-//           }.bind(this))
-//     },
-//   },
-//   computed: {}
-// };
-
 
 var LoginPage = {
   template: "#login-page",
@@ -896,7 +899,7 @@ var router = new VueRouter({
           { path: "/mental_health_services/:id", component: MentalHealthServicesShowPage },
 
           { path: "/survey-page", component: SurveyPage},
-          { path: "/match-page", component: MatchPage},
+          // { path: "/match-page", component: MatchPage},
 
           { path: "/services/", component: ServicesIndexPage },
 

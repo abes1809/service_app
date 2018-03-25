@@ -91,7 +91,7 @@
           <div class="header-hidden-inner container text-white">
             <div class="row">
               <div class="col-sm-6">
-                <h2>If you are in need of immediate help please call 311 or 911</h2>
+                <h2>If you are in need of immediate help please call 911</h2>
                 <!-- <a href="https://www.google.com/" class="btn btn-sm btn-danger">Click here to exit the page immediatley</a>  -->
               </div>
               <div class="col-sm-6">
@@ -130,8 +130,8 @@
             <div class="header-block-flex order-1 mr-auto">
               <nav class="nav nav-sm header-block-flex">
                 <a class="nav-link d-md-none" href="login.html"><i class="fa fa-user"></i></a>
-                <a class="nav-link text-xs text-uppercase d-none d-md-block" href="#login-modal" data-toggle="modal">Login</a> 
-              <div class="header-divider header-divider-sm"></div>
+               <!--  <a class="nav-link text-xs text-uppercase d-none d-md-block" href="#login-modal" data-toggle="modal">Login</a>  -->
+              <!-- <div class="header-divider header-divider-sm"></div> -->
                 <a class="nav-link text-xs text-uppercase d-none d-md-block" href="/#/logout">Logout</a> 
               </nav>
             </div>
@@ -187,8 +187,8 @@
                     <a href="/#/services" class="mb-2 btn btn-outline-green">Explore All Services</a>
                     <a href="/#/user_services" class="mb-2 btn btn-outline-green">See Your Services</a>
                     <a href="/#/login" class="mb-2 btn btn-outline-green">Login</a>
-                    <a href="/#/match-page" class="mb-2 btn btn-outline-green">See If I Qualify</a> 
-                    <a href="/#/provider_create" class="mb-2 btn btn-outline-green">For Providers</a>      
+                    <a href="#" class="mb-2 btn btn-outline-green">For Providers</a>      
+<!--                     <a href="/#/match-page" class="mb-2 btn btn-outline-green">See If I Qualify</a>  -->
 
                 </div>
                 <!--/.navbar-collapse -->
@@ -249,7 +249,7 @@
 
       </footer>
         <!--@modal - login modal-->
-        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <!--     <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -271,16 +271,16 @@
                   <button type="button" class="btn btn-dark">Login</button>
                 </form>
               </div>
-             <!--  <div class="modal-footer">
+             <!-  <div class="modal-footer">
                 <small>Not a member? <a href="#" class="signup">Sign up now!</a></small>
                 <br />
                 <small><a href="#">Forgotten password?</a></small>
               </div> -->
-            </div>
+            <!-- </div> -->
             <!-- /.modal-content -->
-          </div>
+          <!-- </div> -->
           <!-- /.modal-dialog -->
-        </div>
+        </<!-- div -->> -->
         <!-- /.modal -->
       </div>
     
@@ -315,16 +315,16 @@
            <span class="font-weight-bold">Need Help?</span>
           </h1>
           <p class="text-white" data-animate="fadeIn" data-animate-delay="0.2">
-          See if you might qualify for any shelter, mental health, or law services.
+          See if you may qualify for any shelter, mental health, or law services.
           </p>
           <hr class="hr-inverse hr-lg w-20 mx-auto my-4" data-animate="fadeIn" data-animate-delay="0.45" />
-          <div> <a href="#about" class="btn btn-dark btn-rounded btn-lg py-lg-3 px-lg-5" data-toggle="scroll-link" data-animate="fadeIn" data-animate-delay="0.55" oncl>Click Here</a>
+          <div> <a href="/#/survey-page" class="btn btn-dark btn-rounded btn-lg py-lg-3 px-lg-5" data-toggle="scroll-link" data-animate="fadeIn" data-animate-delay="0.55" oncl>Click Here</a>
         </div>
       </div>
     </div>
 
  
-        <h2 class="text-center font-weight-bold my-0">
+        <!-- <h2 class="text-center font-weight-bold my-0">
           What Types of Resources Are You Seeking?
         </h2>
 
@@ -366,7 +366,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
   </div>
 </template>
@@ -383,9 +383,9 @@
 
       <div class="form-group">
         <label>What types of resources are you seeking?</label> <br>
-        <input type="checkbox" value="'law_services'" v-model="lawService"> Law Services<br>
-        <input type="checkbox" value="'mental_health_services'" v-model="mentalHealthService"> Mental Health Services<br>
-        <input type="checkbox" value="'shelters'" v-model="shelter">Shelters<br>
+        <input type="checkbox" value="'law_services'" v-model="lawService"> Law Services <br>
+        <input type="checkbox" value="'mental_health_services'" v-model="mentalHealthService"> Mental Health Services <br>
+        <input type="checkbox" value="'shelters'" v-model="shelter">Shelters <br>
       </div>
 
       <div class="form-group">
@@ -402,8 +402,8 @@
       </div>
       <div class="form-group">
         <label>Are You Currently Experiencing Homelessness?</label> <br>
-          <input type="radio" name="homelessness" value="'yes'"> Yes<br>
-          <input type="radio" name="homelessness" value="'no'" > No<br>
+          <input type="radio" name="homelessness" value="'yes'"> Yes
+          <input type="radio" name="homelessness" value="'no'" > No
       </div>
       <div class="form-group">
         <label>When did you first become homeless?</label>
@@ -435,8 +435,8 @@
       </div>
       <div class="form-group">
         <label>Are you a survivor of domestic violence?</label> <br>
-        <input type="radio" v-model="domesticViolenceSurvivor" :value="'yes'" > Yes<br>
-        <input type="radio" v-model="domesticViolenceSurvivor" :value="'no'"> No<br>
+        <input type="radio" v-model="domesticViolenceSurvivor" :value="'true'" > Yes
+        <input type="radio" v-model="domesticViolenceSurvivor" :value="'false'"> No
       </div>
       <div class="form-group">
         <label>What is the size of your household?</label>
@@ -451,14 +451,19 @@
         <input type="text" class="form-control" v-model="age"> 
       </div>
       <div class="form-group">
-        <label>Do you have a photo ID?</label>
-        <input type="radio" class="form-control" :value="'yes'" v-model="photoId"> Yes
-        <input type="radio" class="form-control" :value="'no'" v-model="photoId"> No
+        <label>Do you have a photo ID?</label> <br>
+        <input type="radio" :value="'true'" v-model="photoId"> Yes
+        <input type="radio" :value="'false'" v-model="photoId"> No
       </div>
       <div class="form-group">
-        <label>Do you have health insurance?</label>
-        <input type="radio" class="form-control" :value="'yes'" v-model="insurance"> Yes
-        <input type="radio" class="form-control" :value="'no'" v-model="insurance"> No
+        <label>Do you have health insurance?</label> <br>
+        <input type="radio" :value="'true'" v-model="insurance"> Yes
+        <input type="radio" :value="'false'" v-model="insurance"> No
+      </div>
+      <div class="form-group">
+        <label>Do you have any dependents under 18 who would accompany you a shelter?</label> <br>
+        <input type="radio" :value="'true'" v-model="children"> Yes
+        <input type="radio" :value="'false'" v-model="children"> No
       </div>
       <div class="form-group">
         <label>Password:</label>
@@ -468,7 +473,7 @@
         <label>Password confirmation:</label>
         <input type="password" class="form-control" v-model="passwordConfirmation">
       </div>
-      <button id="surveyButton" class="btn btn-primary" v-on:click="submit()">Submit</button>
+      <button id="surveyButton" class="btn btn-dark" v-on:click="submit()">Submit</button>
     </div>
   </div>
 </template>
@@ -481,13 +486,6 @@
       <ul>
         <li class="text-danger" v-for="error in errors">{{ error }}</li>
       </ul>
-
-    <!--   <div class="form-group">
-        <label>What types of resources are you seeking?</label> <br>
-        <input type="checkbox" value="'law_services'" v-model="lawService"> Law Services<br>
-        <input type="checkbox" value="'mental_health_services'" v-model="mentalHealthService"> Mental Health Services<br>
-        <input type="checkbox" value="'shelters'" v-model="shelter">Shelters<br>
-      </div> -->
 
       <div class="form-group">
         <label>Name: {{user.name}}</label>
@@ -503,8 +501,8 @@
       </div>
       <div class="form-group">
         <label>Are You Currently Experiencing Homelessness?</label> <br>
-          <input type="radio" name="homelessness" value="'yes'"> Yes<br>
-          <input type="radio" name="homelessness" value="'no'" > No<br>
+          <input type="radio" name="homelessness" value="'yes'"> Yes
+          <input type="radio" name="homelessness" value="'no'" > No
       </div>
       <div class="form-group">
         <label>What state do you reside in? ({{user.state}})</label>
@@ -532,8 +530,8 @@
       </div>
       <div class="form-group">
         <label>Are you a survivor of domestic violence? ({{user.domestic_violence_survivor}})</label> <br>
-        <input type="radio" v-model="domesticViolenceSurvivor" :value="'true'" > Yes<br>
-        <input type="radio" v-model="domesticViolenceSurvivor" :value="'false'"> No<br>
+        <input type="radio" v-model="domesticViolenceSurvivor" :value="'true'" > Yes
+        <input type="radio" v-model="domesticViolenceSurvivor" :value="'false'"> No
       </div>
       <div class="form-group">
         <label>What is the size of your household? ({{user.household_size}})</label>
@@ -548,9 +546,24 @@
         <input type="text" class="form-control" v-model="age"> 
       </div>
       <div class="form-group">
+        <label>Do you have a photo ID?</label> <br>
+        <input type="radio" :value="'true'" v-model="photoId"> Yes
+        <input type="radio" :value="'false'" v-model="photoId"> No
+      </div>
+      <div class="form-group">
+        <label>Do you have health insurance?</label> <br>
+        <input type="radio" :value="'true'" v-model="insurance"> Yes
+        <input type="radio" :value="'false'" v-model="insurance"> No
+      </div>
+      <div class="form-group">
+        <label>Do you have any dependents under 18 who would accompany you a shelter?</label> <br>
+        <input type="radio" :value="'true'" v-model="children"> Yes
+        <input type="radio" :value="'false'" v-model="children"> No
+      </div>
+      <div class="form-group">
         <label>Would you like to be rematched for services?</label> <br>
-        <input type="radio" v-model="rematch" :value="'yes'" > Yes<br>
-        <input type="radio" v-model="rematch" :value="'no'"> No<br>
+        <input type="radio" v-model="rematch" :value="'yes'" > Yes
+        <input type="radio" v-model="rematch" :value="'no'"> No
       </div>
       <div class="form-group">
         <label>What types of resources are you seeking?</label> <br>
@@ -562,7 +575,7 @@
         <label>Password:</label>
         <input type="password" class="form-control" v-model="password">
       </div>
-      <button id="surveyButton" class="btn btn-primary" v-on:click="submit()">Submit</button>
+      <button id="surveyButton" class="btn btn-dark" v-on:click="submit()">Submit</button>
     </div>
   </div>
 </template>
@@ -584,13 +597,23 @@
 <template id="services-index-page">
   <div class="vue-component">
     <div class="container">
+
+      <label id="typeFilter" class="font-weight-bold">Filter Service Types:</label> 
+              <select id="typeFilter" v-model="filterType" v-on:change=""> 
+                <option value="all"><h5>Show all</h5></option>
+                <option value="LawService"><h5>Law Service</h5></option>
+                <option  value="MentalHealthService"><h5>Mental Health Services</h5></option>
+                <option  value="Shelter"><h5>Shelter</h5></option>
+              </select> <br> <br>
+
+     <h2 class="title-divider">
+       <span>Law <span class="font-weight-normal text-muted">Services</span></span>
+<!--        <small>You matched with {{ user_services.length }} services!</small> -->
+     </h2>
+
       <div class="row">
 
-        <h2 class="text-center font-weight-bold my-0">
-          Law Services
-        </h2>
-
-        <div v-for="law_service in law_services" class="col-md-4">
+        <div v-for="law_service in law_services" class="col-md-4" v-if="filterServiceType(law_service)">
  
             <div class="card card-body text-center">
               <abbr v-if="showMatchedServices(law_service)"><i class="fa fa-star"></i></abbr>
@@ -599,15 +622,17 @@
               </h4>
               <p class="card-text">Phone Number: {{ law_service.phone_number }}</p>
               <p class="card-title">Address: {{ law_service.address }} {{ law_service.city }} {{ law_service.state }} {{ law_service.zip }} </p>
-              <a v-bind:href="'/#/law_services/' + law_service.id" class="btn btn-dark">See More Info</a>
+              <a v-bind:href="'/#/law_services/' + law_service.id" class="btn btn-dark mb1 bg-teal">See More Info</a>
             </div> 
           
         </div>
+      </div> <br>
 
-          <h2 class="text-center font-weight-bold my-0">
-            Shelters
-          </h2>
-        <div v-for="shelter in shelters" class="col-md-4">
+      <h2 class="text-center font-weight-bold my-0">
+        Shelters
+      </h2> <br>
+      <div class="row">
+        <div v-for="shelter in shelters" class="col-md-4" v-if="filterServiceType(shelter)">
           
         
             <div class="card card-body text-center">
@@ -617,16 +642,18 @@
               </h4>
               <p class="card-text">Phone Number: {{ shelter.phone_number }}</p>
               <p class="card-title">Address: {{ shelter.address }} {{ shelter.city }} {{ shelter.state }} {{ shelter.zip }} </p>
-              <a v-bind:href="'/#/shelters/' + shelter.id" class="btn btn-dark">See More Info</a>
+              <a v-bind:href="'/#/shelters/' + shelter.id" class="btn btn-dark bg-teal">See More Info</a>
             </div> 
           
         </div>
+      </div>
 
-          <h2 class="text-center font-weight-bold my-0">
-           Mental Health Services
-          </h2>
-        <div v-for="mental_health_service in mental_health_services" class="col-md-4">
+      <h2 class="text-center font-weight-bold my-0">
+       Mental Health Services
+      </h2> <br>
 
+      <div class="row">
+        <div v-for="mental_health_service in mental_health_services" class="col-md-4" v-if="filterServiceType(mental_health_service)">
         
             <div class="card card-body text-center">
               <abbr v-if="showMatchedServices(mental_health_services)"><i class="fa fa-star"></i></abbr>
@@ -635,11 +662,10 @@
               </h4>
               <p class="card-text">Phone Number: {{ mental_health_service.phone_number }}</p>
               <p class="card-title">Address: {{ mental_health_service.address }} {{ mental_health_service.city }} {{ mental_health_service.state }} {{ mental_health_service.zip }} </p>
-              <a v-bind:href="'/#/mental_health_services/' + mental_health_service.id" class="btn btn-dark">See More Info</a>
+              <a v-bind:href="'/#/mental_health_services/' + mental_health_service.id" class="btn btn-dark bg-teal">See More Info</a>
             </div> 
           
         </div>
-
       </div>
     </div>
   </div>
@@ -794,7 +820,7 @@
           <div class="nav-section-menu">
             <h4 class="text-left font-weight-bold my-0" >Your Service Matches! </h4> <br> 
 
-           <p if="filter" class="font-weight-bold">Show me services within</p>
+           <label if="filter" class="font-weight-bold">Show Me Services Within:</label> <br>
               <select id="filter" v-model="optionMiles" v-on:change="">
                 <option value="30"><h5>30 miles</h5></option>
                 <option  value="20"><h5>20 miles</h5></option>
@@ -804,9 +830,9 @@
                 <option  value="4"><h5>4 miles</h5></option>
                 <option  value="2"><h5>2 miles</h5></option>
                 <option  value="1"><h5>1 mile</h5></option>
-              </select>
+              </select> <br> <br>
 
-            <p if="filter" class="font-weight-bold">Filter Service Types</p>
+            <label if="filter" class="font-weight-bold">Filter Service Types:</label> <br> 
               <select id="filter" v-model="filterType" v-on:change=""> 
                 <option value="all"><h5>Show all</h5></option>
                 <option value="LawService"><h5>Law Service</h5></option>
@@ -957,17 +983,6 @@
                 </div>
               </form>
 
-
-              
-              <button class="btn btn-dark" v-on:click="toggleMessageBox()">Click here send this service a message </button> <br>
-
-               <div class="hidden" id="message-input" class="form-group">
-                 <label class="sr-only" for="contact-message">Message</label>
-                 <textarea rows="5" class="form-control" id="contact-message" placeholder="Message"></textarea>
-                 <small id="contact-message-help" class="form-text text-muted">Your message and details.</small>
-                 <input type="button" class="btn btn-dark" value="Send Message">
-               </div>
-
              </div>
 
              <div class="col-md-7">
@@ -985,10 +1000,26 @@
                <p>
                  <abbr id="full-address" title="Address"><i class="fa fa-home"></i></abbr>
                  {{user_service.full_address}}
-               </p> <br> 
+               </p> <br> <br>
+              
+                
+                <div class="google-map" v-bind:id="mapName">
+                  
+                </div> 
+               
+                   <div id="floating-panel">
+                       <b>Mode of Travel: </b>
+                       <select id="mode" v-model="travelMode" v-on:change="resetPanel()">
+                         <option value="Set Directions">Set Directions</option>
+                         <option value="DRIVING">Driving</option>
+                         <option value="WALKING">Walking</option>
+                         <option value="BICYCLING">Bicycling</option>
+                         <option value="TRANSIT">Transit</option>
+                       </select>
+                    </div>
+                <small>Red = The Service || Yellow = You</small> <br>
+                <small id="panel"> </small>
 
-               <div class="google-map" v-bind:id="mapName"></div> 
-                <small>Red = The Service || Yellow = You</small>
                <br> 
                 <button class="btn btn-dark" v-on:click="sendText()">Send Myself This Info</button>
                <br> <br>
@@ -1001,33 +1032,6 @@
      </div>
    </div>
   </div>
-
-<!-- <template id="providers-create-page">
-  <div class="vue-component">
-    <div class="container">
-     <h1>Matching Survey</h1>
-     <h3></h3>
-     <ul>
-       <li class="text-danger" v-for="error in errors">{{ error }}</li>
-     </ul>
-
-      <div class="form-group">
-       <label>What types of resources do you provide? {{message}}</label> <br>
-       <input type="radio" value="'law_services'" v-model="lawService"> Law Services<br>
-       <input type="radio" value="'mental_health_services'" v-model="mentalHealthService"> Mental Health Services<br>
-       <input type="radio" value="'shelters'" v-model="shelter">Shelters<br>
-      </div>
-      <div class="form-group">
-       <label>Name:</label>
-       <input type="text" class="form-control" v-model="name">
-      </div>
-
-      </div>
-        <button id="surveyButton" class="btn btn-primary" v-on:click="submit()">Submit</button>
-      </div>
-    </div>
-  </div>
-</template> -->
   
   
 <template id="login-page">
