@@ -1,5 +1,5 @@
 class MentalHealthService < ApplicationRecord
-  belongs_to :contact_info 
+  belongs_to :contact_info, dependent: :destroy
   has_many :qualifiers, as: :servicable
   has_many :user_services, as: :servicable
 

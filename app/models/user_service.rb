@@ -1,13 +1,11 @@
 class UserService < ApplicationRecord
-  belongs_to :user 
+  belongs_to :user
   belongs_to :servicable, polymorphic: true 
   enum status: {not_contacted: 1, contacted: 2, intake_complete: 3}
 
   def show_match(user_service, user)
 
     service_info = eval("#{user_service.servicable_type}.find(#{user_service.servicable_id})")
-
-    # service_info = [service_info]
 
     service_info = [user_service] + [service_info] + [user.contact_info]
 
@@ -17,16 +15,32 @@ class UserService < ApplicationRecord
 
   def find_distance(user_service, user)
 
+    puts "WORKING"
+
     service_info = eval("#{user_service.servicable_type}.find(#{user_service.servicable_id})")
 
+    puts user.as_json
+    puts "User"
+    puts user.contact_info.latitude
+    puts user.contact_info.longitude
+    puts "SERVICE"
+    puts service_info.contact_info.longitude
+    puts service_info.contact_info.latitude
+
+    puts "Coordinates above"
+
     sleep(2)
+    puts "WORKING"
 
     response = Unirest.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=#{user.contact_info.latitude},#{user.contact_info.longitude}&destinations=#{service_info.contact_info.latitude}%2C#{service_info.contact_info.longitude}&key=#{ENV['GOOGLE_API_KEY']}").body
 
-    if response == "Google API error: over query limit."
-      sleep(10)
-      response = Unirest.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=#{user_lat},#{user_log}&destinations=#{service_lat}%2C#{service_log}&key=#{ENV['GOOGLE_API_KEY']}").body
-    end 
+    # if response == "Google API error: over query limit."
+    #   sleep(10)
+    #   response = Unirest.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=#{user_lat},#{user_log}&destinations=#{service_lat}%2C#{service_log}&key=#{ENV['GOOGLE_API_KEY']}").body
+    # end 
+    puts "WORKING"
+
+    puts response
 
     distance_apart = response["rows"][0]["elements"][0]["distance"]["text"]
 
@@ -47,10 +61,12 @@ class UserService < ApplicationRecord
 
       user_info = [user_service]
 
-      service_info = user_info + service_info + [user.contact_info]
+      service_info = user_info + service_info + [user]
     
       services << service_info
     end
+
+    p services
 
     services
   end

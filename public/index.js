@@ -6,9 +6,7 @@ var HomePage = {
     };
   },
   created: function() {},
-  methods: {
-
-  },
+  methods: {},
   computed: {}
 };
 
@@ -35,6 +33,8 @@ var SurveyPage = {
       city: "",
       state: "",
       zip: "",
+      photoId: "",
+      insurance: "",
       errors: [],
     };
   },
@@ -60,8 +60,9 @@ var SurveyPage = {
         address: this.address,
         city: this.city,
         state: this.state,
-        zip: this.zip
-        
+        zip: this.zip,
+        photo_id: this.photoId,
+        insurance: this.insurance
       };
 
       console.log(params);
@@ -134,7 +135,8 @@ var ServicesIndexPage = {
     return {
       law_services: [],
       mental_health_services: [],
-      shelters: []
+      shelters: [],
+      user_services:[],
     };
   },
   created: function() {
@@ -147,8 +149,244 @@ var ServicesIndexPage = {
     axios.get("/mental_health_services").then(function(response){
       this.mental_health_services=response.data;
     }.bind(this));
+    axios.get("/user_services").then(function(response){
+      this.user_services=response.data;
+      console.log(this.user_services);
+    }.bind(this));
   },
 
+  methods: {
+    showMatchedServices: function(service) {
+      match = false
+
+      this.user_services.forEach(function (user_service) {
+        if (service.type == user_service.servicable_type) {
+          if (service.id == user_service.servicable_id ) {
+            match = true;
+          }
+        }
+      });
+
+      if (match == true) {
+        return true;
+      }
+      else if (match == false) {
+        return false;
+      }
+    },
+  },
+  computed: {}
+
+};
+
+var LawServicesShowPage = {
+  template: "#law_services-show-page",
+
+  data: function() {
+    return {
+      law_service: [],
+
+      mapName: this.name + "-map",
+    };
+  },
+
+  created: function() {
+    axios.get("/law_services/" + this.$route.params.id).then(function(response) {
+        this.law_service = response.data;
+      }.bind(this));
+  },  
+
+  updated: function () {
+      this.$nextTick(function () {
+
+      console.log("UGH")
+
+        var service = {
+                    latitude: this.law_service.latitude,
+                    longitude: this.law_service.longitude,
+                    name: this.law_service.name,
+                    address: this.law_service.full_address,
+                    type: this.law_service.type,
+        };
+        console.log(service);
+
+        var mapCenter = {lat: service["latitude"], lng: service["longitude"]};
+
+        var mapOptions = {
+                          zoom: 12,
+                          center: mapCenter,
+                          styles: [{"featureType":"administrative","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"simplified"}]},{"featureType":"water","stylers":[{"visibility":"simplified"}]},{"featureType":"transit","stylers":[{"visibility":"simplified"}]},{"featureType":"landscape","stylers":[{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"visibility":"off"}]},{"featureType":"road.local","stylers":[{"visibility":"on"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"water","stylers":[{"color":"#84afa3"},{"lightness":52}]},{"stylers":[{"saturation":-17},{"gamma":0.36}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"color":"#3f518c"}]}],
+                        }
+
+        var map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
+        
+        var contentString = "<div style = 'width:300px;min-height:10px'>" + "Name: " + service.name + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Address: " + service.address + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Service Type: " + service.type + "</div>";
+
+         var infoWindow = new google.maps.InfoWindow({
+           content: contentString
+         });
+
+        var marker = new google.maps.Marker({ 
+          position: mapCenter,
+          map,
+          title: service["name"]
+        });
+
+        marker.addListener('click', function() {
+                 infoWindow.open(map, marker);
+               });
+
+        });
+
+    },
+
+  methods: {
+    toggleMessageBox: function () {
+          var element = document.getElementById("message-input");
+          element.classList.toggle("hidden");
+      },
+  },
+  computed: {}
+};
+
+var SheltersShowPage = {
+  template: "#shelters-show-page",
+
+  data: function() {
+    return {
+      shelter: [],
+
+      mapName: this.name + "-map",
+    };
+  },
+
+  created: function() {
+    axios.get("/shelters/" + this.$route.params.id).then(function(response) {
+        this.shelter = response.data;
+      }.bind(this));
+  },  
+
+  updated: function () {
+      this.$nextTick(function () {
+
+      console.log("UGH")
+
+        var service = {
+                    latitude: this.shelter.latitude,
+                    longitude: this.shelter.longitude,
+                    name: this.shelter.name,
+                    address: this.shelter.full_address,
+                    type: this.shelter.type,
+        };
+        console.log(service);
+
+        var mapCenter = {lat: service["latitude"], lng: service["longitude"]};
+
+        var mapOptions = {
+                          zoom: 12,
+                          center: mapCenter,
+                          styles: [{"featureType":"administrative","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"simplified"}]},{"featureType":"water","stylers":[{"visibility":"simplified"}]},{"featureType":"transit","stylers":[{"visibility":"simplified"}]},{"featureType":"landscape","stylers":[{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"visibility":"off"}]},{"featureType":"road.local","stylers":[{"visibility":"on"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"water","stylers":[{"color":"#84afa3"},{"lightness":52}]},{"stylers":[{"saturation":-17},{"gamma":0.36}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"color":"#3f518c"}]}],
+                        }
+
+        var map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
+        
+        var contentString = "<div style = 'width:300px;min-height:10px'>" + "Name: " + service.name + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Address: " + service.address + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Service Type: " + service.type + "</div>";
+
+         var infoWindow = new google.maps.InfoWindow({
+           content: contentString
+         });
+
+        var marker = new google.maps.Marker({ 
+          position: mapCenter,
+          map,
+          title: service["name"]
+        });
+
+        marker.addListener('click', function() {
+                 infoWindow.open(map, marker);
+               });
+
+        });
+
+    },
+
+  methods: {
+    toggleMessageBox: function () {
+          var element = document.getElementById("message-input");
+          element.classList.toggle("hidden");
+      },
+  },
+  computed: {}
+};
+
+var MentalHealthServicesShowPage = {
+  template: "#mental-health-services-show-page",
+
+  data: function() {
+    return {
+      mental_health_service: [],
+
+      mapName: this.name + "-map",
+    };
+  },
+
+  created: function() {
+    axios.get("/mental_health_services/" + this.$route.params.id).then(function(response) {
+        this.mental_health_service = response.data;
+      }.bind(this));
+  },  
+
+  updated: function () {
+      this.$nextTick(function () {
+
+      console.log("UGH")
+
+        var service = {
+                    latitude: this.mental_health_service.latitude,
+                    longitude: this.mental_health_service.longitude,
+                    name: this.mental_health_service.name,
+                    address: this.mental_health_service.full_address,
+                    type: this.mental_health_service.type,
+        };
+        console.log(service);
+
+        var mapCenter = {lat: service["latitude"], lng: service["longitude"]};
+
+        var mapOptions = {
+                          zoom: 12,
+                          center: mapCenter,
+                          styles: [{"featureType":"administrative","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"simplified"}]},{"featureType":"water","stylers":[{"visibility":"simplified"}]},{"featureType":"transit","stylers":[{"visibility":"simplified"}]},{"featureType":"landscape","stylers":[{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"visibility":"off"}]},{"featureType":"road.local","stylers":[{"visibility":"on"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"water","stylers":[{"color":"#84afa3"},{"lightness":52}]},{"stylers":[{"saturation":-17},{"gamma":0.36}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"color":"#3f518c"}]}],
+                        }
+
+        var map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
+        
+        var contentString = "<div style = 'width:300px;min-height:10px'>" + "Name: " + service.name + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Address: " + service.address + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Service Type: " + service.type + "</div>";
+
+         var infoWindow = new google.maps.InfoWindow({
+           content: contentString
+         });
+
+        var marker = new google.maps.Marker({ 
+          position: mapCenter,
+          map,
+          title: service["name"]
+        });
+
+        marker.addListener('click', function() {
+                 infoWindow.open(map, marker);
+               });
+
+        });
+
+    },
+
+  methods: {
+    toggleMessageBox: function () {
+          var element = document.getElementById("message-input");
+          element.classList.toggle("hidden");
+      },
+  },
+  computed: {}
 };
 
 var UserServicesIndexPage = {
@@ -156,6 +394,7 @@ var UserServicesIndexPage = {
   data: function() {
     return {
       user_services: [],
+      user_id: this.user_id,
       errors: [],
       sortAscending: true,
       optionMiles: 30,
@@ -168,6 +407,7 @@ var UserServicesIndexPage = {
     axios.get("/user_services")
       .then(function(response) {
         this.user_services = response.data;
+        this.user_id = response.data[0].user_id;
       }.bind(this))
       .catch(
         function(error) {
@@ -180,6 +420,7 @@ var UserServicesIndexPage = {
 
     updated: function () {
         this.$nextTick(function () {
+          console.log(this.user_id);
 
         service_data = []
 
@@ -319,11 +560,8 @@ var UserServicesIndexPage = {
     },
 };
 
-
 var UserServicesShowPage = {
   template: "#user-services-show-page",
-  name: 'google-map',
-  props: ['name'],
 
   data: function() {
     return {
@@ -333,7 +571,6 @@ var UserServicesShowPage = {
       status: "",
 
       mapName: this.name + "-map",
-      // map: null,
     };
   },
 
@@ -360,7 +597,7 @@ var UserServicesShowPage = {
 
         var userData = {
                         latitude: this.user_service.user_latitude,
-                        longitude: this.user_service.longitude,
+                        longitude: this.user_service.user_longitude,
                         address: this.user_service.user_full_address,
         }
         service_data.push(userData);
@@ -372,7 +609,7 @@ var UserServicesShowPage = {
 
         const mapOptions = {
                           zoom: 20,
-                          center: new google.maps.LatLng(service_data["latitude"], service_data
+                          center: new google.maps.LatLng(service_data[0]["latitude"], service_data[0]
                           ["longitude"]),
                           styles: [{"featureType":"administrative","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"simplified"}]},{"featureType":"water","stylers":[{"visibility":"simplified"}]},{"featureType":"transit","stylers":[{"visibility":"simplified"}]},{"featureType":"landscape","stylers":[{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"visibility":"off"}]},{"featureType":"road.local","stylers":[{"visibility":"on"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"water","stylers":[{"color":"#84afa3"},{"lightness":52}]},{"stylers":[{"saturation":-17},{"gamma":0.36}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"color":"#3f518c"}]}],
                         }
@@ -382,6 +619,7 @@ var UserServicesShowPage = {
 
         service_data.forEach(function(service){
             const position = new google.maps.LatLng(service["latitude"], service["longitude"]);
+            console.log(service);
 
             if (index === 1) {
               var marker = new google.maps.Marker({ 
@@ -454,16 +692,136 @@ var UserServicesShowPage = {
 
   toggleNoteBox: function () {
         var element = document.getElementById("notes-input");
-        element.classList.toggle("user-services-buttons");
+        element.classList.toggle("hidden");
     },
   toggleMessageBox: function () {
         var element = document.getElementById("message-input");
-        element.classList.toggle("user-services-buttons");
+        element.classList.toggle("hidden");
     },
       
   },
   computed: {}
 };
+
+var UserUpdatePage = {
+  template: "#user-update-page",
+  data: function() {
+    return {
+      user: {},
+      user_services: [],
+      lawService: "",
+      mentalHealthService: "",
+      shelter: "",
+      name: null,
+      email: null,
+      gender: null,
+      sex: null,
+      annualIncome: null,
+      householdSize: null,
+      domesticViolenceSurvivor: null,
+      age: null,
+      phoneNumber: null,
+      address: null,
+      city: null,
+      state: null,
+      zip: null,
+      password: null,
+      rematch: "no",
+      errors: [],
+    };
+  },
+  created: function() {
+    axios
+      .get("/users/" + this.$route.params.id)
+      .then(function(response) {
+        console.log("DOING STUFF")
+        this.user = response.data;
+        console.log(this.user)
+      }.bind(this));
+  },
+  methods: {
+    toggleInputBox: function (inputBoxNumber) {
+      console.log(inputBoxNumber);
+          var element = document.getElementById(inputBoxNumber);
+          element.classList.toggle("hidden");
+      },
+    submit: function() {
+      var params = {
+        law: this.lawService || false, 
+        mental: this.mentalHealthService || false, 
+        shelter: this.shelter || false,
+        name: this.name,
+        email: this.email,
+        gender: this.gender,
+        sex: this.sex,
+        annual_income: this.annualIncome,
+        household_size: this.householdSize,
+        domestic_violence_survivor: this.domesticViolenceSurvivor,
+        age: this.age,
+        password: this.password,
+        phone_number: this.phoneNumber,
+        address: this.address,
+        city: this.city,
+        state: this.state,
+        zip: this.zip,
+        rematch: this.rematch
+      };
+
+      console.log("params:");
+      console.log(params);
+      axios
+        .patch("/users/" + this.$route.params.id, params)
+        .then(function(response) {
+          router.push("/user_services/");
+          console.log(response.data);
+          // var user = response.data;
+          // this.name = user.name;
+          // the others
+
+        }.bind(this))
+        .catch(
+          function(error) {
+            this.errors = error.response.data.errors;
+          }.bind(this)
+        );
+    }
+  }
+};
+
+
+// var ProvidersCreatePage = {
+//   template: "#providers-create-page",
+//   data: function() {
+//     return {
+//       lawService: "",
+//       mentalHealthService: "",
+//       shelter: "",
+//       name: "",
+//       message: "welcome",
+//     };
+//   },
+//   created: function() {},
+//   methods: {
+//     submit: function() {
+//       var params = {
+//         law: this.lawService || false, 
+//         mental: this.mentalHealthService || false, 
+//         shelter: this.shelter || false,
+//         name: this.name,
+//       };
+
+//       axios 
+//         .post("/users", params)
+//         .then(function(response) {})
+//         .catch(
+//           function(error) {
+//             this.errors = error.response.data.errors;
+//           }.bind(this))
+//     },
+//   },
+//   computed: {}
+// };
+
 
 var LoginPage = {
   template: "#login-page",
@@ -510,14 +868,21 @@ var router = new VueRouter({
   routes: [
           { path: "/", component: HomePage },
           { path: "/#/", component: HomePage },
+          { path: "/users/:id", component: UserUpdatePage },
+
+          { path: "/law_services/:id", component: LawServicesShowPage },
+          { path: "/shelters/:id", component: SheltersShowPage },
+          { path: "/mental_health_services/:id", component: MentalHealthServicesShowPage },
+
           { path: "/survey-page", component: SurveyPage},
           { path: "/match-page", component: MatchPage},
 
-          { path: "/user_services/:id", component: UserServicesShowPage },
           { path: "/services/", component: ServicesIndexPage },
 
-          { path: "/user_services", component:UserServicesIndexPage },
+          { path: "/user_services/:id", component: UserServicesShowPage },
+          { path: "/user_services", component: UserServicesIndexPage },
 
+          // { path: "/provider_create", component: ProvidersCreatePage },
           { path: "/login", component: LoginPage },
           { path: "/logout", component: LogoutPage },
 
@@ -536,6 +901,21 @@ var app = new Vue({
     if (jwt) {
       axios.defaults.headers.common["Authorization"] = jwt;
     }
+  },
+
+  mounted: function () {
+    this.$nextTick(function () {
+      document.addEventListener('keyup', this.exit);
+    })
+  },
+
+  methods: {
+    exit: function() {
+      if (event.keyCode === 27) {
+          window.location.href = "https://www.google.com/";
+        }
+    }
+
   },
 
 });

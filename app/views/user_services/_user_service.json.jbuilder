@@ -1,5 +1,6 @@
 json.id user_service[0]["id"]
 json.servicable_type user_service[0]["servicable_type"]
+json.servicable_id user_service[0]["servicable_id"]
 json.notes user_service[0]["notes"]
 json.status user_service[0]["status"]
 json.distance user_service[0]["distance"]
@@ -17,9 +18,11 @@ json.latitude user_service[1].contact_info.latitude
 json.longitude user_service[1].contact_info.longitude
 json.full_address user_service[1].contact_info.full_address
 
-json.user_full_address user_service[2].full_address
-json.user_latitude user_service[2].latitude
-json.user_longitude user_service[2].longitude
+json.user_full_address user_service[2].contact_info.full_address
+json.user_latitude user_service[2].contact_info.latitude
+json.user_longitude user_service[2].contact_info.longitude
+json.user_id user_service[2].id
+
 
 
 

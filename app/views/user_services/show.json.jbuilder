@@ -2,6 +2,7 @@
 
 json.id @user_service[0]["id"]
 json.servicable_type @user_service[0]["servicable_type"]
+json.servicable_type @user_service[0]["servicable_id"]
 json.status @user_service[0]["status"]
 json.notes @user_service[0]["notes"]
 

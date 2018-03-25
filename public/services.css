@@ -27,7 +27,7 @@ body {
      color: black;
 }
 
-.user-services-buttons {
+.hidden {
     display: none;
     margin-top: 25px 50px 75px 100px;
 }

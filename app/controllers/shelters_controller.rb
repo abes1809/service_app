@@ -26,8 +26,10 @@ class SheltersController < ApplicationController
                                      city: params[:city],
                                      zip: params[:zip],
                                      prefered_contact_method: params[:prefered_contact_method],
-                                     website: params[:website]
+                                     website: params[:website],
+                                     full_address: @contact_info.address + ", " + @contact_info.city + ", " + @contact_info.state
                                     )
+
       if @contact_info.save
       else 
         render json: {errors: @contact_info.errors.full_messages}, status: :unprocessable_entity

@@ -1,4 +1,5 @@
 json.id mental_health_service.id
+json.type "MentalHealthService"
 json.name mental_health_service.name 
 json.specialty mental_health_service.specialty
 json.email mental_health_service.contact_info.email
@@ -7,5 +8,9 @@ json.address mental_health_service.contact_info.address
 json.city mental_health_service.contact_info.city
 json.state mental_health_service.contact_info.state
 json.zip mental_health_service.contact_info.zip
+
+json.latitude mental_health_service.contact_info.latitude
+json.longitude mental_health_service.contact_info.longitude
+json.full_address mental_health_service.contact_info.full_address
 
 

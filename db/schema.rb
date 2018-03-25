@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180320021328) do
+ActiveRecord::Schema.define(version: 20180324185316) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,8 @@ ActiveRecord::Schema.define(version: 20180320021328) do
     t.boolean "domestic_violence_survivor", default: false
     t.integer "household_size"
     t.integer "age"
+    t.boolean "photo_id"
+    t.boolean "insurance"
   end
 
 end
