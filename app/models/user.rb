@@ -50,4 +50,8 @@ class User < ApplicationRecord
 
   end 
 
+  def send_sms
+
+  end 
+
 end 

@@ -4,6 +4,9 @@ Rails.application.routes.draw do
 
   get "/users/:id" => 'users#show'
   post "/users" => 'users#create'
+  
+  post "/user_text" => 'users#text_info'
+
   patch "/users/:id" => 'users#update'
 
   get "/services" => 'services#index'

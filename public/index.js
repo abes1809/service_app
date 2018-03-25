@@ -698,6 +698,27 @@ var UserServicesShowPage = {
         var element = document.getElementById("message-input");
         element.classList.toggle("hidden");
     },
+
+  sendText: function() {
+        var params = {
+          full_address: this.user_service.full_address,
+          phone_number: this.user_service.phone_number,
+          website: this.user_service.website,
+          zip: this.user_service.zip,
+
+        };
+
+        axios
+          .post("/user_text/", params)
+          .then(function(response) {
+            router.push("/user_services/" + this.$route.params.id);
+          }.bind(this))
+          .catch(
+            function(error) {
+              this.errors = error.response.data.errors;
+            }.bind(this)
+          );
+      },  
       
   },
   computed: {}

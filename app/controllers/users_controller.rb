@@ -242,4 +242,39 @@ class UsersController < ApplicationController
 
   end 
 
+  def text_info 
+
+    address = params[:full_address]
+    phone_number = params[:phone_number]
+    website = params[:website]
+    zip = params[:zip]
+
+    # put your own credentials here
+    account_sid = ENV['TWILLIO_ACCOUNT_SID']
+    auth_token = ENV['TWILLIO_TOKEN']
+
+    message = "Hello! Below is your requested service information! Address: #{address}. Phone Number: #{phone_number}, website: #{website}"
+
+    media = 'https://www.google.com/maps/place/#{address}+#{zip}/'
+
+    puts message
+    puts media
+
+    # set up a client to talk to the Twilio REST API
+    @client = Twilio::REST::Client.new(account_sid, auth_token)
+
+    message = @client.messages.create(
+      body: message,
+      to: '+16303375485',
+      from: ENV['TWILLIO_NUMBER'],
+      # media_url: 
+    )
+
+    puts message
+
+    puts message.sid
+
+
+  end 
+
 end
