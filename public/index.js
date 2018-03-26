@@ -5,7 +5,9 @@ var HomePage = {
     return {
     };
   },
-  created: function() {},
+  created: function() {
+    window.onload = function(){ alert("Safety Alert: Computer use can be monitored and is impossible to completely clear. If you are afraid your internet usage might be monitored, call the National Domestic Violence Hotline at 1−800−799−7233 or TTY 1−800−787−3224. Users will be redirected to Google when clicking the “Exit” or “Escape” button.");}
+  },
   methods: {},
   computed: {}
 };
@@ -36,6 +38,11 @@ var SurveyPage = {
       photoId: "",
       insurance: "",
       children: "",
+
+      homelessAnswer: false,
+      law_show: false,
+      mental_show: false,
+      shelter_show: false,
       errors: []
     };
   },
@@ -97,6 +104,26 @@ var SurveyPage = {
               }.bind(this)
             )})
             
+     },
+   },
+  methods: {
+    homelessAnswerChange: function(answer) {
+      if (answer == "yes"){
+        this.homelessAnswer = true;
+      }
+      else if (answer == "no") {
+        this.homelessAnswer = false;
+      }
+    },
+
+    law: function(){
+      this.law_show = !this.law_show;
+    },
+    mental: function(){
+      this.mental_show = !this.mental_show;
+    },
+    shelterQ: function(){
+      this.shelter_show = !this.shelter_show;
     },
   },
 };
@@ -139,7 +166,9 @@ var ServicesIndexPage = {
       mental_health_services: [],
       shelters: [],
       user_services:[],
-      filterType: "all"
+      filterType: "all",
+      sortAscending: true,
+      active: true
     };
   },
   created: function() {
@@ -187,10 +216,44 @@ var ServicesIndexPage = {
         }
           return false;
       }
-
+    },
+    mouseOver: function(){
+      this.active = !this.active; 
+      console.log("working")
+    }
+  },
+  computed: {
+    sortedLawServices: function() {
+      return this.law_services.sort(function(service1, service2) {
+        if (this.sortAscending) {
+          return service1.name.localeCompare(service2.name);
+        }
+        else {
+          return service2.name - service1.name;
+        }
+      }.bind(this));
+    },
+    sortedShelters: function() {
+      return this.shelters.sort(function(service1, service2) {
+        if (this.sortAscending) {
+          return service1.name.localeCompare(service2.name);
+        }
+        else {
+          return service2.name - service1.name;
+        }
+      }.bind(this));
+    },
+    sortedMentalHealthServices: function() {
+      return this.mental_health_services.sort(function(service1, service2) {
+        if (this.sortAscending) {
+          return service1.name.localeCompare(service2.name);
+        }
+        else {
+          return service2.name - service1.name;
+        }
+      }.bind(this));
     },
   },
-  computed: {}
 };
 
 var LawServicesShowPage = {
