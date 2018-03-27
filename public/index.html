@@ -221,7 +221,7 @@
                   </li>
                   <li>
                     <abbr title="Email"><i class="fa fa-envelope fa-fw"></i></abbr>
-                    info@appstraptheme.com
+                    info@amandanisawesome.com
                   </li>
                   <li>
                     <abbr title="Address"><i class="fa fa-home fa-fw"></i></abbr>
@@ -235,7 +235,7 @@
               <h4 class="text-uppercase text-white">
                 About Us
               </h4>
-              <p>Making the web a prettier place one template at a time! We make beautiful, quality, responsive Drupal & web templates!</p>
+              <p>Connecting people with the care they need in their communities.</p>
             </div>
             
         </div>
@@ -269,7 +269,6 @@
   <div class="vue-component">
 
     <div id="highlighted">
-        <!-- Image Banner: Use the the data-bg-img functionality to create a simple image banner Use spacer classes to make the banner larger with padding, allows for easy responsive changes too see: elements-ctas.htm To make the banner full height/screen add the attributes: data-toggle="full-height" data-offset="#header" -->
         <div class="bg-white overlay overlay-primary overlay-op-8 text-center px-3 py-5 py-lg-10 flex-valign" data-bg-img="assets/img/backgrounds/alley.jpg" data-css='{"background-position": "center bottom","background-attachment": "fixed"}' data-toggle="full-height" data-offset="#header">
           <h1 class="display-4 text-white" data-animate="fadeIn" data-animate-delay="0.2">
            <span class="font-weight-bold">Need Help?</span>
@@ -283,7 +282,7 @@
       </div>
     </div>
 
- 
+ <!-- ____________separate survey link___________________ -->
         <!-- <h2 class="text-center font-weight-bold my-0">
           What Types of Resources Are You Seeking?
         </h2>
@@ -362,22 +361,22 @@
       </div>
       <div class="form-group">
         <label>Are You Currently Experiencing Homelessness?</label> <br>
-          <input type="radio" v-on:click="homelessAnswerChange('yes')" name="homelessness" value="'yes'"> Yes
-          <input type="radio" v-on:click="homelessAnswerChange('no')" name="homelessness" value="'no'" > No
+          <input type="radio" v-on:click="notHomeless('yes')" name="homelessness" value="'yes'"> Yes
+          <input type="radio" v-on:click="notHomeless('no')" name="homelessness" value="'no'" > No
       </div>
       <div v-if="homelessAnswer" class="form-group">
         <label>When did you first become homeless?</label>
         <input type="date" class="form-control" v-model="homelessDate">
       </div>
-      <div v-if="homelessAnswer" class="form-group">
+      <div v-if="notHomeless_show" class="form-group">
         <label>What state do you reside in?</label>
         <input type="text" class="form-control" v-model="state"> 
       </div>
-      <div v-if="homelessAnswer" class="form-group">
+      <div v-if="notHomeless_show" class="form-group">
         <label>What city do you live in?</label>
         <input type="text" class="form-control" v-model="city"> 
       </div>
-      <div v-if="homelessAnswer" class="form-group">
+      <div v-if="notHomeless_show" class="form-group">
         <label>What is your address?</label>
         <input type="text" class="form-control" v-model="address"> 
       </div>
@@ -574,17 +573,20 @@
        <span>Law <span class="font-weight-normal text-muted">Services</span></span>
        <small><a href="/#/survey-page">Want Personalized Service Matches? Take our quick and easy match survey to be matched with services based your eligibility.</a></small>
      </h2>
+
       <div class="row">
+
         <div v-for="law_service in sortedLawServices" class="col-md-4" v-if="filterServiceType(law_service)">
             <div id="indexCard" class="card card-body text-center h-90">
               <div class="h-90">
-                <abbr v-if="showMatchedServices(law_service)"><i class="fa fa-star"></i></abbr>
-                <h4 class="card-title">
-                  {{law_service.name}}
+                <p v-if="showMatchedServices(law_service)"><i class="fa fa-star"></i></p>
+                <h4 class="card-title font-weight-bold">
+                  {{law_service.name | titleCase}}
                 </h4>
-                <p class="card-title">Address: {{ law_service.address }} {{ law_service.city }} {{ law_service.state }} {{ law_service.zip }} </p>
+                <p class="card-title">Address: {{ law_service.address | titleCase }} {{ law_service.city }} {{ law_service.state }} {{ law_service.zip }} </p>
                 
               </div> 
+              <a><p v-if="showMatchedServices(law_service)"> You are matched with this service!</p></a>
               <a id="indexButton" v-bind:href="'/#/law_services/' + law_service.id" class="align-bottom btn btn-dark mb1 bg-teal">See More Info</a>
           </div>
         </div>
@@ -604,11 +606,12 @@
                     <p v-if="active">Show</p>
                   </abbr>
                 </div>
-                <h4 class="card-title">
-                  {{shelter.name}}
+                <h4 class="card-title font-weight-bold">
+                  {{shelter.name | titleCase}}
                 </h4>
-                <p class="card-title">Address: {{ shelter.address }} {{ shelter.city }} {{ shelter.state }} {{ shelter.zip }} </p>
+                <p class="card-title">Address: {{ shelter.address | titleCase}} {{ shelter.city }} {{ shelter.state }} {{ shelter.zip }} </p>
               </div>
+                <a href="/#/user_services"><p v-if="showMatchedServices(shelter)"> You are matched with this service!</p></a>
                 <a id="indexButton" v-bind:href="'/#/shelters/' + shelter.id" class="btn btn-dark bg-teal">See More Info</a>
             </div> 
           
@@ -626,11 +629,12 @@
             <div id="indexCard" class="card card-body text-center h-90">
               <div class="h-90">
                 <abbr v-if="showMatchedServices(mental_health_services)"><i class="fa fa-star"></i></abbr>
-                <h4 class="card-title">
-                  {{mental_health_service.name}}
+                <h4 class="card-title font-weight-bold">
+                  {{mental_health_service.name | titleCase}}
                 </h4>
-                <p class="card-title">Address: {{ mental_health_service.address }} {{ mental_health_service.city }} {{ mental_health_service.state }} {{ mental_health_service.zip }} </p>
+                <p class="card-title">Address: {{ mental_health_service.address | titleCase }} {{ mental_health_service.city }} {{ mental_health_service.state }} {{ mental_health_service.zip }} </p>
               </div>
+                <a href="/#/user_services"><p v-if="showMatchedServices(mental_health_service)"> You are matched with this service!</p></a>
                 <a v-bind:href="'/#/mental_health_services/' + mental_health_service.id" class="btn btn-dark bg-teal">See More Info</a>
             </div> 
           
@@ -651,24 +655,25 @@
           </h1>
           <div class="row">
             <div class="col-md-5">
+              
+            <h4 class="font-weight-bold"> Description:</h4> <h5>{{ law_service.specialty }}</h5><br><br>
 
-               <h4 id="services-show-page"> Description: {{ law_service.specialty }} </h4><br><br><br> <br>
             </div>
             <div class="col-md-7">
               <p>
                 <abbr title="Phone"><i class="fa fa-phone"></i></abbr>
-                {{law_service.phone_number}}
+                {{law_service.phone_number | formatPhoneNumber}}
               </p>
               <p>
                 <abbr title="Email"><i class="fa fa-envelope"></i></abbr>
-                {{law_service.email}}
+                {{law_service.email | ifBlank}}
               </p>
               <p>
                 <abbr title="Website"><i class="fa fa-desktop"></i></abbr>
-                {{law_service.website}} 
+                {{law_service.website | ifBlank}} 
               <p>
                 <abbr id="full-address" title="Address"><i class="fa fa-home"></i></abbr>
-                {{law_service.full_address}}
+                {{law_service.address |titleCase}}, {{law_service.city}}, {{law_service.state}}
               </p> <br> 
 
               <div class="google-map" v-bind:id="mapName"></div> 
@@ -690,23 +695,23 @@
           <div class="row">
             <div class="col-md-5">
 
-               <h4 id="services-show-page"> Description: {{ shelter.specialty }} </h4><br><br><br> <br>
+               <h4 class="font-weight-bold"> Description:</h4> <h5>{{ shelter.specialty }}</h5><br><br><br><br><br> <br>
             </div>
             <div class="col-md-7">
               <p>
                 <abbr title="Phone"><i class="fa fa-phone"></i></abbr>
-                {{shelter.phone_number}}
+                {{shelter.phone_number | formatPhoneNumber}}
               </p>
               <p>
                 <abbr title="Email"><i class="fa fa-envelope"></i></abbr>
-                {{shelter.email}}
+                {{shelter.email | ifBlank}}
               </p>
               <p>
                 <abbr title="Website"><i class="fa fa-desktop"></i></abbr>
-                {{shelter.website}} 
+                {{shelter.website | ifBlank}} 
               <p>
                 <abbr id="full-address" title="Address"><i class="fa fa-home"></i></abbr>
-                {{shelter.full_address}}
+                {{shelter.full_address |titleCase}}, {{shelter.city}}, {{shelter.state}}
               </p> <br> 
 
               <div class="google-map" v-bind:id="mapName"></div> 
@@ -728,23 +733,23 @@
           <div class="row">
             <div class="col-md-5">
 
-               <h4 id="services-show-page"> Description: {{ mental_health_service.specialty }} </h4><br><br><br> <br>
+               <h4 class="font-weight-bold"> Description:</h4> <h5>{{ mental_health_service.specialty }}</h5><br><br><br> <br>
             </div>
             <div class="col-md-7">
               <p>
                 <abbr title="Phone"><i class="fa fa-phone"></i></abbr>
-                {{mental_health_service.phone_number}}
+                {{mental_health_service.phone_number | formatPhoneNumber}}
               </p>
               <p>
                 <abbr title="Email"><i class="fa fa-envelope"></i></abbr>
-                {{mental_health_service.email}}
+                {{mental_health_service.email | ifBlank}}
               </p>
               <p>
                 <abbr title="Website"><i class="fa fa-desktop"></i></abbr>
-                {{mental_health_service.website}} 
+                {{mental_health_service.website | ifBlank}} 
               <p>
                 <abbr id="full-address" title="Address"><i class="fa fa-home"></i></abbr>
-                {{mental_health_service.full_address}}
+                {{mental_health_service.full_address |titleCase}}, {{mental_health_service.city}}, {{mental_health_service.state}}
               </p> <br> 
 
               <div class="google-map" v-bind:id="mapName"></div> 
@@ -763,7 +768,7 @@
           
           <!-- Sections Menu-->
           <div class="nav-section-menu">
-            <h4 class="text-left font-weight-bold my-0" >Your Service Matches! </h4> <br> 
+            <h4 class="text-left font-weight-bold my-0" >Your Service Matches Below! </h4> <br> 
 
            <label if="filter" class="font-weight-bold">Show Me Services Within:</label> <br>
               <select id="filter" v-model="optionMiles" v-on:change="">
@@ -785,17 +790,13 @@
                 <option  value="Shelter"><h5>Shelter</h5></option>
               </select>
 
-            
-
-
-            <!-- <buttonv v-on:click=""></button> -->
             <div class="nav nav-list">
               <span class="nav-header ">Services</span> 
               <a v-for="user_service in sortedServiceDistances" v-bind:href="'/#/user_services/' + user_service.id" class="nav-link first active">
                 <div v-if="filterDistance(user_service)">
                   <div v-if="filterServiceType(user_service)">
-                    {{ user_service.name }}
-                    <small> {{ user_service.servicable_type }} </small>
+                    {{ user_service.name | titleCase }}
+                    <small> {{ user_service.servicable_type | addSpace }} </small>
                     <small> {{ user_service.distance}} miles away </small>
 
                     <i class="fa fa-angle-right"></i>
@@ -809,7 +810,7 @@
             <h2 class="title-divider">
               <span>Your <span class="font-weight-normal text-muted">Homepage</span></span>
               <small>You matched with {{ user_services.length }} services!</small>
-            </h2>
+            </h2>  <br>
             <small><a id="teal-color" v-bind:href="'/#/users/' + user_id">Update my Match Survey</a></small>
 
             
@@ -817,15 +818,15 @@
             <h4>
               About Your Matches
             </h4>
-            <p> You can find your matches to the left of this page. Click on the name to find more infomration about the service. You were matched with these services based on the infomration you discolsed in the matching survey. Although it is likely you will be able to access these services, it is important to contact the services before visiting them to ensure avalibility and qualification.</p>
+            <p> You can find your matches to the left of this page. Click on the name to find more information about the service. You were matched with these services based on the information you discolsed in the matching survey. Always contact services directly to ensure eligibility.</p>
 
-            <p>When you click on a serivce, you will see an option to update your contact with the service and add any notes. This is avaliable to you to keep track of communication and needed follow up.</p>
-            <h4 class="mt-4">
+            <p>When you click on a serivce, you will see an option to update your contact with the service and add any notes. This is avaliable to you to keep track of communication and needed follow up.</p> <br> 
+         <!--    <h4 class="mt-4">
               Tips for Navigating Social Services
             </h4>
             <p>Esca lenis ludus saluto wisi. Camur commodo ea gilvus pagus paratus saepius te. Illum nostrud nulla.</p>
             <p>Abluo aliquip capto commodo esse hos ibidem nimis. Acsi dolore eros jus roto. Abigo diam paratus. Aliquip elit ibidem ludus modo plaga tation volutpat. Eum gravis ille lenis refoveo sed. Accumsan comis elit humo meus oppeto quis typicus ulciscor. Blandit camur gemino genitus jugis letalis lucidus macto. Abdo adipiscing commoveo decet eros metuo os persto utinam. Capto iusto pertineo praemitto sed. Abbas et modo occuro probo quae scisco venio vindico.</p>
-            <p>Amet imputo laoreet nulla pala. Abbas amet feugiat macto neque quis roto rusticus validus zelus. Aptent nisl velit. Aliquam causa consequat patria populus sed si typicus vulpes.</p> <br>
+            <p>Amet imputo laoreet nulla pala. Abbas amet feugiat macto neque quis roto rusticus validus zelus. Aptent nisl velit. Aliquam causa consequat patria populus sed si typicus vulpes.</p> <br> -->
 
             <h4>Your Service Map</h4>
 
@@ -836,46 +837,76 @@
             <small>Red = Mental Health Services</small>
 
             <br> <br> <br>
-
             
             <div class="title-divider mt-4" id="stats">
               <h3>
                 <span>Hotlines for<span class="font-weight-normal text-muted"> Immediate Help</span></span>
-                <small>Call 911 if you are in immediate danger.</small>
+                <small>Call 911 if you or someone you know are in immediate danger.</small>
               </h3>
+            </div>
+
+            <div>
+              <p>In general, hotlines have three things in common:</p>
+            </div>
+            <ul>
+              <li>They are available to call 24/7.</li>
+              <li>They are 100% confidential.</li>
+              <li>They are free.</li>
+            </ul>
+            <div>
+              <p>Here’s a list of hotlines that may help you in whatever situation you find yourself in.</p>
+            </div>
+            <div>
+              <p> <span id="teal" class="font-weight-bold">Feeling Overwhelmed?</span> There are a lot of phone numbers on this page. If you don’t know where to start, we suggest dialing 2-1-1 on your phone to be connected with the national human service call center. You can learn more about the 2-1-1 number <a href="http://www.211.org/">here.</a></p>
             </div>
             <div class="row stats">
               <div class="col-md-3 stat">
-                <div class="stat-header">1280</div>
-                <small>Happpy Customers</small>
+                <div class="stat-header">Text Home to 741741</div>
+                <small>Crisis Text Line</small>
               </div>
               <div class="col-md-3 stat">
-                <div class="stat-header">1634</div>
-                <small>GB Transfered</small>
+                <div class="stat-header">1-800-422-4453</div>
+                <small>Childhelp National Child Abuse Hotline</small>
               </div>
               <div class="col-md-3 stat">
-                <div class="stat-header">(630)-337-5485</div>
-                <small>Bugs Fixed</small>
+                <div class="stat-header">1-800-799-7233</div>
+                <small>National Domestic Violence Hotline</small>
               </div>
               <div class="col-md-3 stat">
-                <div class="stat-header">12</div>
-                <small>Share Holders</small>
+                <div class="stat-header">1-888-293-2080</div>
+                <small>Rape Victim Advocates (24/7 Chicago sexual assualt hotline)</small>
               </div>
               <div class="col-md-3 stat">
-                <div class="stat-header">1280</div>
-                <small>Happpy Customers</small>
+                <div class="stat-header">1-800-786-2929</div>
+                <small>National Runaway Safeline</small>
               </div>
               <div class="col-md-3 stat">
-                <div class="stat-header">1634</div>
-                <small>GB Transfered</small>
+                <div class="stat-header">1-800-273-8255</div>
+                <small>National Suicide Prevention Hotline</small>
               </div>
               <div class="col-md-3 stat">
-                <div class="stat-header">2143</div>
-                <small>Bugs Fixed</small>
+                <div class="stat-header">312-738-9200</div>
+                <small>CARPLS Hotline (Legal Services) </small>
               </div>
               <div class="col-md-3 stat">
-                <div class="stat-header">12</div>
-                <small>Share Holders</small>
+                <div class="stat-header">1-800-394-2255</div>
+                <small>National Center for Victims of Crime </small>
+              </div>
+              <div class="col-md-3 stat">
+                <div class="stat-header">1-888-843-4564</div>
+                <small>Gay and Lesbian National Hotline</small>
+              </div>
+              <div class="col-md-3 stat">
+                <div class="stat-header">1-800-662-4357</div>
+                <small>Drug Abuse National Helpline</small>
+              </div>
+              <div class="col-md-3 stat">
+                <div class="stat-header">1-877-565-8860</div>
+                <small>Trans Lifeline</small>
+              </div>
+              <div class="col-md-3 stat">
+                <div class="stat-header">311</div>
+                <small>General City of Chicago Services Call Center</small>
               </div>
             </div>
           </div>
@@ -898,15 +929,15 @@
            <div class="row">
              <div class="col-md-5">
 
-                <h4 id="services-show-page"> Description: {{ user_service.speciality }} </h4><br><br>
+                <h4 class="font-weight-bold"> Description:</h4> <h5>{{ user_service.speciality }}</h5><br><br>
 
-                <h4 id="services-show-page"> Distance Apart: {{ user_service.distance }} </h4><br><br>
+                <h4 class="font-weight-bold"> Distance Apart: <span class="font-weight-normal">{{ user_service.distance }} miles</span> </h4><br><br>
 
              <!--    <h4 id="services-show-page"> Best way to contact: {{ user_service.prefered_contact }} </h4><br><br> -->
 
-                <h4 id="services-show-page"> Contact Stage: 
+                <h4 class="font-weight-bold" id="services-show-page"> Contact Stage: 
                  
-                  <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{status}} </button>
+                  <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{status | addSpace}} </button>
 
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
@@ -916,7 +947,7 @@
                 
                 </h4><br><hr>
 
-                <h5 class="notes-box" id="services-show-page"> Notes: {{ user_service.notes }} </h5><br>
+                <h5 class="notes-box" id="services-show-page" placeholder="yas" > Notes: <small> {{ user_service.notes | ifNotesBlank }} </small> </h5><br>
                 <button class="btn btn-dark small" v-on:click="toggleNoteBox()">Click here to add notes!</button> <br>
 
             <!--   </div> -->
@@ -933,18 +964,18 @@
              <div class="col-md-7">
                <p>
                  <abbr title="Phone"><i class="fa fa-phone"></i></abbr>
-                 {{user_service.phone_number}}
+                 {{user_service.phone_number | formatPhoneNumber}}
                </p>
                <p>
                  <abbr title="Email"><i class="fa fa-envelope"></i></abbr>
-                 {{user_service.email}}
+                 {{user_service.email | ifBlank}}
                </p>
                <p>
                  <abbr title="Website"><i class="fa fa-desktop"></i></abbr>
-                 {{user_service.website}} 
+                 {{user_service.website | ifBlank}} 
                <p>
                  <abbr id="full-address" title="Address"><i class="fa fa-home"></i></abbr>
-                 {{user_service.full_address}}
+                 {{user_service.address | titleCase}}, {{user_service.city}}, {{user_service.state}}
                </p> <br> <br>
               
                 
@@ -953,9 +984,9 @@
                 </div> 
                
                    <div id="floating-panel">
-                       <b>Mode of Travel: </b>
+                       <b>Get Directions: </b>
                        <select id="mode" v-model="travelMode" v-on:change="resetPanel()">
-                         <option value="Set Directions">Set Directions</option>
+
                          <option value="DRIVING">Driving</option>
                          <option value="WALKING">Walking</option>
                          <option value="BICYCLING">Bicycling</option>
@@ -966,7 +997,7 @@
                 <small id="panel"> </small>
 
                <br> 
-                <button class="btn btn-dark" v-on:click="sendText()">Send Myself This Info</button>
+                <button class="btn btn-dark" v-on:click="sendText()">Text Me this Services Information</button>
                <br> <br>
 
              </div>

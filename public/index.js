@@ -40,6 +40,7 @@ var SurveyPage = {
       children: "",
 
       homelessAnswer: false,
+      notHomeless_show: true,
       law_show: false,
       mental_show: false,
       shelter_show: false,
@@ -107,11 +108,13 @@ var SurveyPage = {
      },
    },
   methods: {
-    homelessAnswerChange: function(answer) {
+    notHomeless: function(answer) {
       if (answer == "yes"){
+        this.notHomeless_show = false;
         this.homelessAnswer = true;
       }
       else if (answer == "no") {
+        this.notHomeless_show = true;
         this.homelessAnswer = false;
       }
     },
@@ -168,7 +171,8 @@ var ServicesIndexPage = {
       user_services:[],
       filterType: "all",
       sortAscending: true,
-      active: true
+      active: false,
+      message: "sup",
     };
   },
   created: function() {
@@ -219,8 +223,8 @@ var ServicesIndexPage = {
     },
     mouseOver: function(){
       this.active = !this.active; 
-      console.log("working")
-    }
+      console.log(this.active)
+    },
   },
   computed: {
     sortedLawServices: function() {
@@ -254,6 +258,19 @@ var ServicesIndexPage = {
       }.bind(this));
     },
   },
+  filters: {
+    titleCase: function(str) {
+        str = str.toLowerCase().split(' ');
+        for (var i = 0; i < str.length; i++) {
+          str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
+        }
+        return str.join(' ');
+      },
+    addSpace: function(str){
+      return str.substring(0, 1) +
+      str.substring(1).replace(/([a-z])?([A-Z])/g, "$1 $2");
+    },
+  },
 };
 
 var LawServicesShowPage = {
@@ -270,6 +287,7 @@ var LawServicesShowPage = {
   created: function() {
     axios.get("/law_services/" + this.$route.params.id).then(function(response) {
         this.law_service = response.data;
+        console.log(this.law_service);
       }.bind(this));
   },  
 
@@ -297,7 +315,7 @@ var LawServicesShowPage = {
 
         var map = new google.maps.Map(document.getElementById(this.mapName), mapOptions);
         
-        var contentString = "<div style = 'width:300px;min-height:10px'>" + "Name: " + service.name + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Address: " + service.address + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Service Type: " + service.type + "</div>";
+        var contentString = "<div style = 'width:300px;min-height:10px'>" + "Name: " + service.name + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Address: " + service.address + "</div>";
 
          var infoWindow = new google.maps.InfoWindow({
            content: contentString
@@ -323,7 +341,32 @@ var LawServicesShowPage = {
           element.classList.toggle("hidden");
       },
   },
-  computed: {}
+  computed: {},
+  filters: {
+    titleCase: function(str) {
+        str = str.toLowerCase().split(' ');
+        for (var i = 0; i < str.length; i++) {
+          str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
+        }
+        return str.join(' ');
+      },
+    addSpace: function(str){
+      return str.replace(/(_|^)([^_]?)/g, function(_, prep, letter) {
+        return (prep && ' ') + letter.toUpperCase();
+      });
+    },
+    formatPhoneNumber: function(s) {
+      var s2 = (""+s).replace(/\D/g, '');
+      var m = s2.match(/^(\d{3})(\d{3})(\d{4})$/);
+      return (!m) ? null : "(" + m[1] + ") " + m[2] + "-" + m[3];
+    },
+    ifBlank: function(str){
+      if (str == null){
+        str = "N/A"
+      }
+      return str;
+    },
+  },
 };
 
 var SheltersShowPage = {
@@ -393,7 +436,33 @@ var SheltersShowPage = {
           element.classList.toggle("hidden");
       },
   },
-  computed: {}
+  computed: {},
+
+  filters: {
+    titleCase: function(str) {
+        str = str.toLowerCase().split(' ');
+        for (var i = 0; i < str.length; i++) {
+          str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
+        }
+        return str.join(' ');
+      },
+    addSpace: function(str){
+      return str.replace(/(_|^)([^_]?)/g, function(_, prep, letter) {
+        return (prep && ' ') + letter.toUpperCase();
+      });
+    },
+    formatPhoneNumber: function(s) {
+      var s2 = (""+s).replace(/\D/g, '');
+      var m = s2.match(/^(\d{3})(\d{3})(\d{4})$/);
+      return (!m) ? null : "(" + m[1] + ") " + m[2] + "-" + m[3];
+    },
+    ifBlank: function(str){
+      if (str == null){
+        str = "N/A"
+      }
+      return str;
+    },
+  },
 };
 
 var MentalHealthServicesShowPage = {
@@ -463,7 +532,32 @@ var MentalHealthServicesShowPage = {
           element.classList.toggle("hidden");
       },
   },
-  computed: {}
+  computed: {},
+  filters: {
+    titleCase: function(str) {
+        str = str.toLowerCase().split(' ');
+        for (var i = 0; i < str.length; i++) {
+          str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
+        }
+        return str.join(' ');
+      },
+    addSpace: function(str){
+      return str.replace(/(_|^)([^_]?)/g, function(_, prep, letter) {
+        return (prep && ' ') + letter.toUpperCase();
+      });
+    },
+    formatPhoneNumber: function(s) {
+      var s2 = (""+s).replace(/\D/g, '');
+      var m = s2.match(/^(\d{3})(\d{3})(\d{4})$/);
+      return (!m) ? null : "(" + m[1] + ") " + m[2] + "-" + m[3];
+    },
+    ifBlank: function(str){
+      if (str == null){
+        str = "N/A"
+      }
+      return str;
+    },
+  },
 };
 
 var UserServicesIndexPage = {
@@ -501,13 +595,17 @@ var UserServicesIndexPage = {
 
         service_data = []
 
+
         this.user_services.forEach(function(service) {
+
+          var filterType = service.servicable_type.substring(0, 1) + service.servicable_type.substring(1).replace(/([a-z])?([A-Z])/g, "$1 $2"); 
+
           var data = {
                       latitude: service.latitude,
                       longitude: service.longitude,
                       name: service.name,
                       address: service.full_address,
-                      type: service.servicable_type,
+                      type: filterType,
                       distance: service.distance
           }
           service_data.push(data)
@@ -552,7 +650,7 @@ var UserServicesIndexPage = {
               var content = "<div style = 'width:300px;min-height:10px'>" + "Your disclosed address/location" + "</div>"; 
             }
 
-            else if (service.type == "LawService") {
+            else if (service.type == "Law Service") {
               var marker = new google.maps.Marker({ 
                 position,
                 map,
@@ -562,7 +660,7 @@ var UserServicesIndexPage = {
               var content = "<div style = 'width:300px;min-height:10px'>" + "Name: " +service.name + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Address: " + service.address + "</div>" + "<div style = 'width:250px;min-height:10px'>" + "Service Type: " + service.type + "</div>";
             }
 
-            else if (service.type == "MentalHealthService") {
+            else if (service.type == "Mental Health Service") {
               var marker = new google.maps.Marker({ 
                 position,
                 map,
@@ -635,6 +733,20 @@ var UserServicesIndexPage = {
         }.bind(this));
       }
     },
+
+    filters: {
+      titleCase: function(str) {
+          str = str.toLowerCase().split(' ');
+          for (var i = 0; i < str.length; i++) {
+            str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
+          }
+          return str.join(' ');
+        },
+      addSpace: function(str){
+        return str.substring(0, 1) +
+        str.substring(1).replace(/([a-z])?([A-Z])/g, "$1 $2");
+      },
+    },
 };
 
 var UserServicesShowPage = {
@@ -662,13 +774,16 @@ var UserServicesShowPage = {
 
   updated: function () {
       this.$nextTick(function () {
+        sT = this.user_service.servicable_type;
+
+        var filterType = sT.substring(0, 1) + sT.substring(1).replace(/([a-z])?([A-Z])/g, "$1 $2"); 
 
         var service_data = [{
                     latitude: this.user_service.latitude,
                     longitude: this.user_service.longitude,
                     name: this.user_service.name,
                     address: this.user_service.full_address,
-                    type: this.user_service.servicable_type,
+                    type: filterType,
                     distance: this.user_service.distance
         }]
 
@@ -796,10 +911,10 @@ var UserServicesShowPage = {
         var element = document.getElementById("notes-input");
         element.classList.toggle("hidden");
     },
-  toggleMessageBox: function () {
-        var element = document.getElementById("message-input");
-        element.classList.toggle("hidden");
-    },
+  // toggleMessageBox: function () {
+  //       var element = document.getElementById("message-input");
+  //       element.classList.toggle("hidden");
+  //   },
 
   sendText: function() {
         var params = {
@@ -821,6 +936,37 @@ var UserServicesShowPage = {
             }.bind(this)
           );
       },
+  },
+  filters: {
+    titleCase: function(str) {
+        str = str.toLowerCase().split(' ');
+        for (var i = 0; i < str.length; i++) {
+          str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
+        }
+        return str.join(' ');
+      },
+    addSpace: function(str){
+      return str.replace(/(_|^)([^_]?)/g, function(_, prep, letter) {
+        return (prep && ' ') + letter.toUpperCase();
+      });
+    },
+    formatPhoneNumber: function(s) {
+      var s2 = (""+s).replace(/\D/g, '');
+      var m = s2.match(/^(\d{3})(\d{3})(\d{4})$/);
+      return (!m) ? null : "(" + m[1] + ") " + m[2] + "-" + m[3];
+    },
+    ifBlank: function(str){
+      if (str == null){
+        str = "N/A"
+      }
+      return str;
+    },
+    ifNotesBlank: function(str){
+      if (str == ""){
+        str = "You currently have no notes."
+      }
+      return str;
+    },
   },
 };
 

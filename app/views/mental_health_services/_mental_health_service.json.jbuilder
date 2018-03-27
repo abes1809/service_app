@@ -11,6 +11,7 @@ json.zip mental_health_service.contact_info.zip
 
 json.latitude mental_health_service.contact_info.latitude
 json.longitude mental_health_service.contact_info.longitude
+json.website mental_health_service.contact_info.website
 json.full_address mental_health_service.contact_info.full_address
 
 

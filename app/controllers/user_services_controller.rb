@@ -7,9 +7,6 @@ class UserServicesController < ApplicationController
     services = current_user.user_services
 
     @user_services = services.index_matches(services, current_user)
-
-    puts "DOWN HERE"
-    p @user_services
     
     if render 'index.json.jbuilder'
 

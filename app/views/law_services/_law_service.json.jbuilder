@@ -12,3 +12,4 @@ json.longitude law_service.contact_info.longitude
 json.city law_service.contact_info.city
 json.state law_service.contact_info.state
 json.zip law_service.contact_info.zip
+json.website law_service.contact_info.website

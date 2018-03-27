@@ -12,3 +12,4 @@ json.zip shelter.contact_info.zip
 json.latitude shelter.contact_info.latitude
 json.longitude shelter.contact_info.longitude
 json.full_address shelter.contact_info.full_address
+json.website shelter.contact_info.website
