@@ -248,6 +248,7 @@ class UsersController < ApplicationController
 
   def text_info 
 
+    name = params[:name]
     address = params[:full_address]
     phone_number = params[:phone_number]
     website = params[:website]
@@ -261,7 +262,7 @@ class UsersController < ApplicationController
 
     message = "
 
-    Hello! Below is your requested service information!
+    Hello! Below is your requested service information for #{name}!
 
     - Address: #{address}, 
 

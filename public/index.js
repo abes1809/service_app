@@ -6,7 +6,7 @@ var HomePage = {
     };
   },
   created: function() {
-    window.onload = function(){ alert("Safety Alert: Computer use can be monitored and is impossible to completely clear. If you are afraid your internet usage might be monitored, call the National Domestic Violence Hotline at 1−800−799−7233 or TTY 1−800−787−3224. Users will be redirected to Google when clicking the “Exit” or “Escape” button.");}
+    window.onload = function(){ alert("Safety Alert: Computer use can be monitored and is impossible to completely clear. If you are afraid your internet usage might be monitored, call the National Domestic Violence Hotline at 1−800−799−7233. Users will be redirected to Google when clicking the “Exit” or “Escape” button.");}
   },
   methods: {},
   computed: {}
@@ -106,8 +106,6 @@ var SurveyPage = {
             )})
             
      },
-   },
-  methods: {
     notHomeless: function(answer) {
       if (answer == "yes"){
         this.notHomeless_show = false;
@@ -293,8 +291,6 @@ var LawServicesShowPage = {
 
   updated: function () {
       this.$nextTick(function () {
-
-      console.log("UGH")
 
         var service = {
                     latitude: this.law_service.latitude,
@@ -922,7 +918,7 @@ var UserServicesShowPage = {
           phone_number: this.user_service.phone_number,
           website: this.user_service.website,
           zip: this.user_service.zip,
-
+          name: this.user_service.name
         };
 
         axios
